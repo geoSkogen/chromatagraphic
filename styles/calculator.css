@@ -1,0 +1,84 @@
+body {
+  background-color: white;
+}
+
+#app {
+  background-color: black;
+  opacity: 0.5;
+  height: 700px;
+  width: 360px;
+  position: relative;
+  z-index: 1;
+}
+
+.flexOuterCenter,
+.flexOuterColumn,
+.flexOuterEnd {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.flexOuterColumn {
+  flex-flow: column wrap;
+  margin: 1em;
+  //  border: 1px solid blue;
+}
+
+.flexInnerColumn {
+  flex: 1 1 2%;
+}
+
+.flexOuterEnd {
+  justify-content: flex-end;
+  margin: 0.1em;
+}
+
+.integer {
+
+}
+
+.char {
+//  flex: 1 1 5%;
+}
+
+.flexOuterCenter {
+//  border: 1px solid green;
+}
+.colorCodeNumeric,
+.inputNumeric {
+  position: absolute;
+  z-index: 10;
+}
+
+.colorCodeNumeric {
+  flex: 1 1 80%;
+  top: 2%;
+  padding: 0.33em;
+  margin: 0.33em;
+  font-family: courier;
+  font-size: 30px;
+  color: white;
+  flex: 1 1 50%;
+}
+
+.inputNumeric {
+  border-radius: 3px;
+  border: 2px solid lightsteelblue;
+  font-size: 20px;
+  padding: 0.5em;
+  font-family: courier;
+  top: 45%;
+  color: black;
+}
+
+
+input {
+
+}
+
+.customRule {
+  width: 100%;
+  height: 1px;
+  color: grey;
+}
