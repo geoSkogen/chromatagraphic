@@ -3,22 +3,41 @@ body {
 }
 
 #app {
-  background-color: black;
-  opacity: 0.7;
+  position: relative;
   height: 700px;
   width: 360px;
-  position: relative;
   z-index: 1;
+}
+
+#backdrop {
+  background-color: black;
+  opacity: 0.6;
+  height: 700px;
+  width: 360px;
+  z-index:1;
+}
+
+@media only screen and (min-width: 620px) {
+  #app,
+  #backdrop { width: 620px;}
+}
+
+@media only screen and (min-width: 960px) {
+  #app,
+  #backdrop { width: 960px;}
 }
 
 .flexOuterCenter,
 .flexOuterColumn,
-.flexOuterEnd {
+.flexOuterEnd,
+.flexOuterSpace {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
 }
-
+.flexOuterSpace {
+  justify-content: space-around;
+}
 .flexOuterColumn {
   flex-flow: column wrap;
   margin: 1em;
@@ -48,9 +67,63 @@ body {
 }
 
 .colorCodeNumeric,
-.inputNumeric {
+.controlPanel,
+.opChar {
   position: absolute;
+  border-radius: 3px;
+}
+
+#tenKey {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  width: 12em;
+  display: none;
+}
+
+#tenKeyLeft {
+  width: 12em;
+  /*height: 16em;*/
+}
+
+.opChar,
+.keyChar {
+  flex: 1 1 8%;
+  font-size: 16px;
+  font-family: courier;
+  font-weight: bold;
+  padding: 0.2em;
+  margin: 0.2em;
+  border-radius: 3px;
+  opacity: 0.9;
   z-index: 10;
+  width: 0.5em;
+}
+/*
+#plus {
+  content: "&plus;"
+}
+
+#minus {
+  content: "&minus;"
+}
+
+#multiply {
+  content: "&times;"
+}
+
+#divide {
+  content: "&divide;"
+}
+
+*/
+
+.keyChar {
+  background-color: cornflowerblue;
+  color: whitesmoke;
+}
+
+.opChar {
 }
 
 .colorCodeNumeric {
@@ -60,7 +133,19 @@ body {
   font-family: courier;
   font-size: 30px;
   color: white;
+  background-color: black;
+  opacity: 0.7;
+  z-index: 5;
+}
+
+.controlPanel {
+  top: 36%;
   flex: 1 1 50%;
+  background-color: black;
+  opacity: 0.7;
+  z-index: 10;
+  font-size: 24px;
+  padding: 0.33em;
 }
 
 .inputNumeric {
@@ -69,10 +154,9 @@ body {
   font-size: 20px;
   padding: 0.5em;
   font-family: courier;
-  top: 45%;
   color: black;
+  width: 250px;
 }
-
 
 input {
 
@@ -82,5 +166,5 @@ input {
   width: 100%;
   height: 8px;
   color: whitesmoke;
-  position: absolute; 
+  position: absolute;
 }
