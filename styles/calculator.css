@@ -1,10 +1,10 @@
 body {
-  background-color: white;
+  background-color: snow;
 }
 
 #app {
   position: relative;
-  height: 700px;
+  height: 620px;
   width: 360px;
   z-index: 1;
 }
@@ -12,14 +12,14 @@ body {
 #backdrop {
   background-color: black;
   opacity: 0.6;
-  height: 700px;
+  height: 620px;
   width: 360px;
   z-index:1;
 }
 
-@media only screen and (min-width: 620px) {
+@media only screen and (min-width: 560 px) {
   #app,
-  #backdrop { width: 620px;}
+  #backdrop { width: 568px;}
 }
 
 @media only screen and (min-width: 960px) {
@@ -35,13 +35,26 @@ body {
   flex-flow: row wrap;
   justify-content: center;
 }
+
+.flexOuterCenter {
+  //border: 4px solid yellow;
+}
+
+.flexInnerCenter {
+  flex: 1 1 50%;
+
+}
+
 .flexOuterSpace {
   justify-content: space-around;
+  margin: 1em;
+  //border: 1px solid grey;
 }
+
 .flexOuterColumn {
   flex-flow: column wrap;
   margin: 1em;
-  //  border: 1px solid blue;
+  //border: 1px solid green;
 }
 
 .flexInnerColumn {
@@ -62,10 +75,6 @@ body {
   font-weight: bold;
 }
 
-.flexOuterCenter {
-//  border: 1px solid green;
-}
-
 .colorCodeNumeric,
 .controlPanel,
 .opChar {
@@ -74,31 +83,58 @@ body {
 }
 
 #tenKey {
+  min-width: 15em;
+  max-width: 15em;
   position: absolute;
-  top: 40%;
-  left: 40%;
-  width: 12em;
-  display: none;
+  bottom: 5%;
+  left: 16%;
+  z-index: 10;
+  //border: 1px solid blue;
 }
 
 #tenKeyLeft {
-  width: 12em;
-  /*height: 16em;*/
+  min-width: 7em;
+  position: relative;
+  margin: 1em;
+  padding-right: 3em;
+  border: 2px solid cornflowerblue;
+  border-radius: 3px;
+}
+
+#tenKeyRight {
+  min-width: 3em;
+  position: absolute;
+  left: 61%;
+  top:0%;
 }
 
 .opChar,
-.keyChar {
+.keyChar,
+.keyCharLong,
+.keyCharTall {
   flex: 1 1 8%;
-  font-size: 16px;
-  font-family: courier;
-  font-weight: bold;
-  padding: 0.2em;
+  font-size: 20px;
+  font-family: Helvetica;
+  //font-weight: bold;
+  padding: 0.33em;
   margin: 0.2em;
   border-radius: 3px;
   opacity: 0.9;
+  text-align: center;
   z-index: 10;
-  width: 0.5em;
+  width: 1.2em;
+  max-width: 1.2em;
+  height: 1.2em;
+  cursor: pointer;
 }
+
+.opChar:hover,
+.keyChar:hover,
+.keyCharLong:hover,
+.keyCharTall:hover {
+  background-color: pink;
+}
+
 /*
 #plus {
   content: "&plus;"
@@ -118,10 +154,24 @@ body {
 
 */
 
-.keyChar {
+.keyChar,
+.keyCharLong,
+.keyCharTall {
   background-color: cornflowerblue;
   color: whitesmoke;
 }
+
+.keyCharLong {
+  width: 3.2em;
+  max-width: 3.2em;
+}
+.keyCharTall {
+/*
+parameters will have to be changed if plus & equals signs center vertically*/
+
+  height: 3.45em;
+}
+
 
 .opChar {
 }
@@ -142,7 +192,7 @@ body {
   top: 36%;
   flex: 1 1 50%;
   background-color: black;
-  opacity: 0.7;
+  opacity: 0.0;
   z-index: 10;
   font-size: 24px;
   padding: 0.33em;
