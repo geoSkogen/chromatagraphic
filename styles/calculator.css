@@ -1,5 +1,5 @@
 body {
-  background-color: snow;
+  background-color: ivory;
 }
 
 #app {
@@ -10,6 +10,7 @@ body {
 }
 
 #backdrop {
+  flex: 1 1 100%;
   background-color: black;
   opacity: 0.6;
   height: 620px;
@@ -17,7 +18,7 @@ body {
   z-index:1;
 }
 
-@media only screen and (min-width: 560 px) {
+@media only screen and (min-width: 560px) {
   #app,
   #backdrop { width: 568px;}
 }
@@ -25,6 +26,10 @@ body {
 @media only screen and (min-width: 960px) {
   #app,
   #backdrop { width: 960px;}
+}
+.relShell {
+  position: relative;
+  height: 0.2em;
 }
 
 .flexOuterCenter,
@@ -53,17 +58,27 @@ body {
 
 .flexOuterColumn {
   flex-flow: column wrap;
-  margin: 1em;
+  //margin: 1em;
   //border: 1px solid green;
 }
 
 .flexInnerColumn {
   flex: 1 1 2%;
+  min-width: 300px;
+  max-width: 320px;
+  position: relative;
+  //border: 1px solid ivory;
+}
+
+@media only screen and (min-width: 560px) {
+  .flexInnerColumn { width: 540px; }
 }
 
 .flexOuterEnd {
   justify-content: flex-end;
   margin: 0.1em;
+  //border: 1px solid red;
+
 }
 
 .integer {
@@ -73,6 +88,7 @@ body {
 .char {
 /*  flex: 1 1 5%;*/
   font-weight: bold;
+  opacity: 0.9;
 }
 
 .colorCodeNumeric,
@@ -104,8 +120,8 @@ body {
 #tenKeyRight {
   min-width: 3em;
   position: absolute;
-  left: 61%;
-  top:0%;
+  left: 67.5%;
+  top:6.2%;
 }
 
 .opChar,
@@ -153,12 +169,12 @@ body {
 }
 
 */
-
+.opChar,
 .keyChar,
 .keyCharLong,
 .keyCharTall {
   background-color: cornflowerblue;
-  color: snow;
+  color: ivory;
 }
 
 .keyCharLong {
@@ -168,24 +184,74 @@ body {
 .keyCharTall {
 /*
 parameters will have to be changed if plus & equals signs center vertically*/
-
   height: 3.45em;
 }
 
 
 .opChar {
+  /*location will go here*/
+  left: 0%;
+  top: 0%;
+  font-weight: bold;
 }
 
 .colorCodeNumeric {
   top: 2%;
-  padding: 0.33em;
+  padding: 0.16em;
+  //padding-bottom: 1.36em;
   margin: 0.33em;
   font-family: courier;
   font-size: 30px;
   color: white;
   background-color: black;
-  opacity: 0.7;
+  opacity: 0.9;
   z-index: 5;
+  display: none;
+}
+
+#resultsBox {
+  position: absolute;
+  z-index: 15;
+  background-color: ivory;
+  color: black;
+  min-width: 300px;
+  max-width: 320px;
+  min-height: 2em;
+  font-size: 28px;
+  //padding: 0.2em;
+  top: 20%;
+  border-radius: 3px;
+  display: none;
+}
+
+@media only screen and (min-width: 560px) {
+#resultsBox { width: 540px; }
+}
+
+#resultsText {
+  font-family: courier;
+  padding: 0.25em;
+}
+
+.closeModal {
+  font-size: 30px;
+  font-family: Courier;
+  font-weight: bold;
+  color: dimgrey;
+  background-color: ivory;
+  padding: 0.06em 0.2em 0 0.2em;;
+  border: 1.5px solid dimgrey;
+  border-radius: 100%;
+  position: absolute;
+  top: -200%;
+  right: -5%;
+  cursor: pointer;
+}
+
+.closeModal:hover {
+  color: black;
+  border: 1.5px solid black;
+  opacity: 0.9;
 }
 
 .controlPanel {
