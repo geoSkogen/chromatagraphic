@@ -1,4 +1,5 @@
 'use strict'
+/*
 function cleanInputString(badinput) {
   var goodinput = ""
   var badarray = badinput.split("")
@@ -11,8 +12,4 @@ function cleanInputString(badinput) {
   }
   return goodinput
 }
-
-var input = document.getElementById("testInput")
-var val = Number(input.value) * 1000
-var output = document.getElementById("test1")
-output.innerHTML = val
+*/
