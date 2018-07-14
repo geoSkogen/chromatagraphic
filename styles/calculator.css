@@ -112,7 +112,7 @@ body {
   min-width: 7em;
   position: relative;
   margin: 1em;
-  padding-right: 3em;
+  padding-right: 2.8em;
   border: 2px solid cornflowerblue;
   border-radius: 3px;
 }
@@ -120,7 +120,7 @@ body {
 #tenKeyRight {
   min-width: 3em;
   position: absolute;
-  left: 67.5%;
+  left: 71%;
   top:6.2%;
 }
 
