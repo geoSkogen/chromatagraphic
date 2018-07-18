@@ -70,8 +70,11 @@ body {
   //border: 1px solid ivory;
 }
 
-@media only screen and (min-width: 560px) {
-  .flexInnerColumn { width: 540px; }
+@media only screen and (min-width: 960px) {
+  .flexInnerColumn {
+    min-width: 480px;
+    max-width: 520px;
+  }
 }
 
 .flexOuterEnd {
@@ -92,7 +95,7 @@ body {
 }
 
 .colorCodeNumeric,
-.controlPanel,
+.inputPanel,
 .opChar {
   position: absolute;
   border-radius: 3px;
@@ -109,6 +112,13 @@ body {
 }
 
 @media only screen and (min-width: 560px) {
+  #tenKey {
+   bottom: 47%;
+   left: 0%;
+  }
+}
+
+@media only screen and (min-width: 960px) {
   #tenKey {
    bottom: 47%;
    left: 8%;
@@ -216,10 +226,20 @@ parameters will have to be changed if plus & equals signs center vertically*/
   display: none;
 }
 
-#resultsBox {
+@media only screen and (min-width: 560px) {
+  .colorCodeNumeric { right: 0% }
+}
+
+@media only screen and (min-width: 960px) {
+  .colorCodeNumeric { right: 10% }
+}
+
+#resultsBox,
+#subTotalBox,
+#controlPanelBox {
   position: absolute;
   z-index: 15;
-  background-color: ivory;
+  background-color: silver;
   color: black;
   min-width: 300px;
   max-width: 320px;
@@ -231,13 +251,45 @@ parameters will have to be changed if plus & equals signs center vertically*/
   display: none;
 }
 
-@media only screen and (min-width: 560px) {
-#resultsBox { width: 540px; }
+#resultsBox,
+#subTotalBox {
+  opacity: 0.9;
 }
 
-#resultsText {
+#subTotalBox {
+  top: 90%;
+  display: block;
+}
+
+#controlPanelBox {
+  top: 8%;
+  min-height: 560px;
+  display: block;
+  background-color: dimgrey;
+  color: whitesmoke;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
+}
+
+@media only screen and (min-width: 560px) {
+  #resultsBox,
+  #subTotalBox,
+  #controlPanelBox { min-width: 540px; }
+}
+
+@media only screen and (min-width: 960px) {
+  #controlPanelBox { min-width: 940px; }
+  #subTotalBox { top: 80%; }
+}
+
+#resultsText,
+#subTotalText {
   font-family: courier;
   padding: 0.25em;
+}
+
+#controlPanelText {
+
 }
 
 .closeModal {
@@ -261,7 +313,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
   opacity: 0.9;
 }
 
-.controlPanel {
+.inputPanel {
   top: 36%;
   flex: 1 1 50%;
   background-color: black;
@@ -290,4 +342,8 @@ input {
   height: 8px;
   color: whitesmoke;
   position: absolute;
+}
+
+#test1 {
+  display: none;
 }
