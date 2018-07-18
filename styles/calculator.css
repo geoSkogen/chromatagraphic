@@ -13,7 +13,7 @@ body {
   flex: 1 1 100%;
   background-color: black;
   opacity: 0.6;
-  height: 620px;
+  height: 580px;
   width: 360px;
   z-index:1;
 }
@@ -26,6 +26,16 @@ body {
 @media only screen and (min-width: 960px) {
   #app,
   #backdrop { width: 960px;}
+}
+
+@media only screen and (min-height: 730px) {
+  #app,
+  #backdrop { height: 730px;}
+}
+
+@media only screen and (min-height: 810px) {
+  #app,
+  #backdrop { height: 810px;}
 }
 .relShell {
   position: relative;
@@ -253,7 +263,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
 
 #resultsBox,
 #subTotalBox {
-  opacity: 0.9;
+
 }
 
 #subTotalBox {
@@ -275,6 +285,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
   #resultsBox,
   #subTotalBox,
   #controlPanelBox { min-width: 540px; }
+  #subTotalBox { top: 48%; }
 }
 
 @media only screen and (min-width: 960px) {
@@ -286,6 +297,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
 #subTotalText {
   font-family: courier;
   padding: 0.25em;
+  opacity: 0.9;
 }
 
 #controlPanelText {
