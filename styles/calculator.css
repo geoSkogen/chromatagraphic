@@ -28,6 +28,11 @@ body {
   #backdrop { width: 960px;}
 }
 
+@media only screen and (min-height: 660px) {
+  #app,
+  #backdrop { height: 660px;}
+}
+
 @media only screen and (min-height: 730px) {
   #app,
   #backdrop { height: 730px;}
@@ -272,13 +277,13 @@ parameters will have to be changed if plus & equals signs center vertically*/
 }
 
 #controlPanelBox {
-  top: 8%;
+  top: 4%;
   min-height: 560px;
   display: block;
   background-color: dimgrey;
   color: whitesmoke;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 20px;
+  font-size: 12px;
 }
 
 @media only screen and (min-width: 560px) {
@@ -302,6 +307,18 @@ parameters will have to be changed if plus & equals signs center vertically*/
 
 #controlPanelText {
 
+}
+
+form {
+  padding: 1em;
+}
+
+.radioButtonLabel {
+  padding: 0 0.5em 0 0.5em;
+}
+
+input[type="radio"] {
+  margin: 0.33em 3em 0.33em 3em;
 }
 
 .closeModal {
@@ -357,5 +374,5 @@ input {
 }
 
 #test1 {
-  display: none;
+  //display: none;
 }
