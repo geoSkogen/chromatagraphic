@@ -256,8 +256,8 @@ parameters will have to be changed if plus & equals signs center vertically*/
   z-index: 15;
   background-color: silver;
   color: black;
-  min-width: 300px;
-  max-width: 320px;
+  min-width: 320px;
+  max-width: 360px;
   min-height: 2em;
   font-size: 28px;
   //padding: 0.2em;
@@ -273,12 +273,12 @@ parameters will have to be changed if plus & equals signs center vertically*/
 
 #subTotalBox {
   top: 90%;
-  display: block;
+  display: none;
 }
 
 #controlPanelBox {
   top: 4%;
-  min-height: 560px;
+  min-height: 960px;
   display: block;
   background-color: dimgrey;
   color: whitesmoke;
@@ -313,12 +313,33 @@ form {
   padding: 1em;
 }
 
+.radioLabel {
+  font-size: 20px;
+}
+
 .radioButtonLabel {
   padding: 0 0.5em 0 0.5em;
 }
 
 input[type="radio"] {
   margin: 0.33em 3em 0.33em 3em;
+}
+
+.clearButton {
+  padding: 0.66em;
+  border: 1px solid whitesmoke;
+  border-radius: 3px;
+  margin: 1.66em;
+  cursor: pointer;
+  opacity: 0.9;
+  font-size: 18px;
+}
+
+.clearButton:hover {
+  //color: black;
+  background-color: orangered;
+  opacity: 0.8;
+  border: 1px solid red;
 }
 
 .closeModal {
