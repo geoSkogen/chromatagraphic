@@ -120,7 +120,7 @@ body {
   min-width: 15em;
   max-width: 15em;
   position: absolute;
-  bottom: 5%;
+  bottom: 9%;
   left: 16%;
   z-index: 10;
   //border: 1px solid blue;
@@ -272,7 +272,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
 }
 
 #subTotalBox {
-  top: 90%;
+  top: 84%;
   display: none;
 }
 
