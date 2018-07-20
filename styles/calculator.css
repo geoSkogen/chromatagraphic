@@ -50,7 +50,9 @@ body {
 .flexOuterCenter,
 .flexOuterColumn,
 .flexOuterEnd,
-.flexOuterSpace {
+.flexOuterStart,
+.flexOuterSpace,
+.flexOuterSpaceBetween {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -71,6 +73,11 @@ body {
   //border: 1px solid grey;
 }
 
+.flexOuterSpaceBetween {
+  justify-content: space-between;
+  //border: 1px solid grey;
+}
+
 .flexOuterColumn {
   flex-flow: column wrap;
   //margin: 1em;
@@ -82,7 +89,50 @@ body {
   min-width: 300px;
   max-width: 320px;
   position: relative;
+  background-color: black;
+  opacity: 0.9;
+  min-height: 1.4em;
+  //margin: 0.05em;
+  padding-top: 0.1em;
   //border: 1px solid ivory;
+  -webkit-perspective: 210px; /* Safari 4-8  */
+  perspective: 210px;
+}
+
+.perspectiveShell {
+
+}
+
+.perspectiveShell_awayBottom {
+  min-width: 288px;
+  max-width: 320px;
+  position: absolute;
+  opacity: 0.8;
+  margin: 0 6px 0 6px;
+  background: linear-gradient(dimgrey, black);
+  border-bottom: 2px solid dimgrey;
+  -webkit-transform-style: preserve-3d; /* Safari 3-8  */
+  -webkit-transform: rotateX(20deg); /* Safari 3-8  */
+  transform-style: preserve-3d;
+  transform: rotateX(20deg);
+}
+
+.perspectiveShell_awayTop {
+  min-width: 248px;
+  max-width: 320px;
+  position: absolute;
+  opacity: 0.8;
+  margin: 0 6px 0 26px;
+  background: linear-gradient(black, dimgray);
+  border-bottom: 8px solid dimgrey;
+  -webkit-transform-style: preserve-3d; /* Safari 3-8  */
+  -webkit-transform: rotateX(54deg); /* Safari 3-8  */
+  transform-style: preserve-3d;
+  transform: rotateX(54deg);
+}
+
+.perspectiveShell_relaxed {
+
 }
 
 @media only screen and (min-width: 960px) {
@@ -90,13 +140,28 @@ body {
     min-width: 480px;
     max-width: 520px;
   }
+  .perspectiveShell_awayBottom {
+    min-width: 460px;
+    max-width: 490px;
+    margin-left: 8px;
+    //margin-right: 4px;
+  }
+  .perspectiveShell_awayTop {
+    min-width: 396px;
+    max-width: 460px;
+    margin-left: 40px;
+    //margin-right: 4px;
+  }
 }
 
 .flexOuterEnd {
   justify-content: flex-end;
   margin: 0.1em;
   //border: 1px solid red;
+}
 
+.flexOuterStart {
+  justify-content: flex-start;
 }
 
 .integer {
@@ -113,6 +178,11 @@ body {
 .inputPanel,
 .opChar {
   position: absolute;
+  border-radius: 3px;
+}
+
+.opCharStatic {
+  position: static;
   border-radius: 3px;
 }
 
@@ -157,6 +227,7 @@ body {
 }
 
 .opChar,
+.opCharStatic,
 .keyChar,
 .keyCharLong,
 .keyCharTall {
@@ -176,7 +247,12 @@ body {
   cursor: pointer;
 }
 
+.opCharStatic {
+  margin: 0.075em 0.2em 0.2em 0.2em;
+}
+
 .opChar:hover,
+.opCharStatic:hover,
 .keyChar:hover,
 .keyCharLong:hover,
 .keyCharTall:hover {
@@ -202,6 +278,7 @@ body {
 
 */
 .opChar,
+.opCharStatic,
 .keyChar,
 .keyCharLong,
 .keyCharTall {
@@ -220,7 +297,8 @@ parameters will have to be changed if plus & equals signs center vertically*/
 }
 
 
-.opChar {
+.opChar,
+.opCharStatic {
   /*location will go here*/
   left: 0%;
   top: 0%;
@@ -236,7 +314,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
   font-size: 30px;
   color: white;
   background-color: black;
-  opacity: 0.9;
+  //opacity: 0.6;
   z-index: 5;
   display: none;
 }

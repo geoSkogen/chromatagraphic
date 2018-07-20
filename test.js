@@ -13,9 +13,11 @@ function cleanInputString(badinput) {
   return goodinput
 }
 */
+/*
 var myinput = document.getElementsByTagName("input")[0]
 var myoutput = document.getElementById("testMe")
 //myinput.focus()
 window.addEventListener("keydown", function () {
   myoutput.innerHTML += "keydown"
 })
+*/
