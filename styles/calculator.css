@@ -1,5 +1,5 @@
 body {
-  background-color: ivory;
+  background-color: black;
 }
 
 #app {
@@ -121,7 +121,7 @@ body {
   min-width: 248px;
   max-width: 320px;
   position: absolute;
-  opacity: 0.8;
+  opacity: 0.6;
   margin: 0 6px 0 26px;
   background: linear-gradient(black, dimgray);
   border-bottom: 8px solid dimgrey;
@@ -132,7 +132,7 @@ body {
 }
 
 .perspectiveShell_relaxed {
-
+  opacity: 0.85;
 }
 
 @media only screen and (min-width: 960px) {

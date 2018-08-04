@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>
+  </title>
+
+  <link rel="stylesheet" href="styles/calculator.css"/>
+  <script src="lib/angular.js"></script>
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+<!--<script>
+  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+</script>-->
+
+</head>
+<body>
+<div class="flexOuterCenter">
+  <div id="app">
+    <div class="flexOuterCenter">
+      <div id="backdrop"></div>
+    </div>
+    <!-- THIS IS A MODEL OF THE RESULTS MODAL -->
+    <div class="flexOuterCenter">
+      <div class="modal" id="resultsBox">
+        <div class="relShel">
+          <div class="closeModal">&times;</div>
+        </div>
+        <div class="flexOuterCenter" id="resultsText">
+        </div>
+      </div>
+    </div>
+    <!-- THIS IS A MODEL OF THE SUBTOTAL PANEL MODAL -->
+    <div class="flexOuterCenter">
+      <div class="modal" id="subTotalBox">
+        <div class="relShel">
+          <div class="closeModal">&times;</div>
+        </div>
+        <div class="flexOuterCenter" id="subTotalText">
+        </div>
+      </div>
+    </div>
+    <!-- THIS IS A MODEL OF THE CONTROL PANEL MODAL -->
+    <div class="flexOuterCenter">
+      <div class="modal" id="controlPanelBox">
+        <div class="relShell">
+          <div class="closeModal">&times;</div>
+        </div>
+        <div class="flexOuterCenter" id="controlPanelText">
+          <form>
+            <div class="flexOuterCenter" id="formShell0">
+              <div class="radioLabel">mode</div>
+            </div>
+            <div class="flexOuterCenter" id="formShell1">
+              <input type="radio" name="mode" class="modeButton"
+                 value="OrderOfOperations" id="OrderOfOperations"/>
+              <input type="radio" name="mode" class="modeButton"
+                 value="LineByLineSubTotal" id="LineByLineSubTotal"/>
+            </div>
+            <div class="flexOuterCenter" id="formShell2">
+              <div class="radioButtonLabel">OrderOfOperations</div>
+              <div class="radioButtonLabel">LineByLineSubTotal</div>
+            </div>
+            <div class="flexOuterCenter" id="formShell3">
+              <div class="clearButton">clear</div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- THIS IS A MODEL OF THE INVISIBLE INPUT -->
+    <div class="flexOuterCenter">
+      <div class="inputPanel">
+        <div class="flexOuterCenter">
+          <input type="text" id="theInput"/>
+        </div>
+      </div>
+    </div>
+    <!-- THIS IS A MODEL OF THE NEW COLOR-CODED DISPLAY -->
+    <div class="flexOuterCenter">
+      <div class="colorCodeNumeric" id="textBox">
+        <div class="flexOuterColumn" id="theOutput">
+
+          <div class="flexInnerColumn">
+            <div class="perspectiveShell_awayTop">
+              <div class="flexOuterEnd">
+                <div class="flexOuterEnd">
+                  <!--<div class="char">1</div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flexInnerColumn">
+            <div class="perspectiveShell_awayBottom">
+              <div class="flexOuterSpaceBetween">
+                <div class="flexOuterStart">
+                  <!--<div class="opCharStatic">&minus;</div>-->
+                </div>
+                <div class="flexOuterEnd">
+                  <!--<div class="char"></div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flexInnerColumn">
+            <div class="perspectiveShell_relaxed">
+              <div class="flexOuterSpaceBetween">
+                <div class="flexOuterStart">
+                  <!--<div class="opCharStatic">&plus;</div>-->
+                </div>
+                <div class="flexOuterEnd">
+                  <!--<div class="char" style="color:blue;">2</div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flexInnerColumn">
+            <div class="perspectiveShell">
+              <div class="flexOuterSpaceBetween">
+                <div class="flexOuterStart">
+                  <!--<div class="opCharStatic">&minus;</div>-->
+                </div>
+                <div class="flexOuterEnd">
+                  <!--<div class="char" style="color:orangered">5</div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--  THIS IS A MODEL OF THE 10-KEY -->
+    <div id="tenKey">
+      <div class="flexInnerCenter" id="tenKeyLeft">
+        <div class="flexOuterSpace">
+          <div class="keyChar">&laquo;</div>
+          <div class="keyChar">&divide;</div>
+          <div class="keyChar">&times;</div>
+          <div class="keyChar">7</div>
+          <div class="keyChar">8</div>
+          <div class="keyChar">9</div>
+          <div class="keyChar">4</div>
+          <div class="keyChar">5</div>
+          <div class="keyChar">6</div>
+          <div class="keyChar">1</div>
+          <div class="keyChar">2</div>
+          <div class="keyChar">3</div>
+          <div class="keyCharLong">0</div>
+          <div class="keyChar">&period;</div>
+        </div>
+        <div id="tenKeyRight">
+          <div class="flexOuterColumn">
+            <div class="keyChar">&minus;</div>
+            <div class="keyCharTall">&plus;</div>
+            <div class="keyCharTall">&equals;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script src="integrate.js"></script>
+
+</html>
