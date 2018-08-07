@@ -36,6 +36,21 @@ function initFuncs() {
    })
  }
 
+  function displayControlPanel() {
+    controlPanel.style.display = "block"
+  }
+
+  function displayResults(num, idStr, elm) {
+    var charArr = num.toString().split("")
+    var thisLine = document.getElementById(idStr)
+    elm.style.display = "block"
+    thisLine.innerHTML = ""
+    for (let i = 0; i < charArr.length; i++) {
+        thisLine.appendChild(colorDivFactory(charArr[i]))
+    }
+    return true
+  }
+
   function makeNewLine() {
     var innerRow = document.createElement("div")
     var newLine = document.createElement("div")
@@ -52,31 +67,27 @@ function initFuncs() {
     input.value = ""
   }
 
-  function displayControlPanel() {
-    controlPanel.style.display = "block"
-  }
-
-  function displayResults(num, idStr, elm) {
-    var charArr = num.toString().split("")
-    var thisLine = document.getElementById(idStr)
-    elm.style.display = "block"
-    thisLine.innerHTML = ""
-    for (let i = 0; i < charArr.length; i++) {
-        thisLine.appendChild(colorDivFactory(charArr[i]))
-    }
-    return true
-  }
-
   function displayOperator(indexNo) {
     var char = operatorHTML[indexNo]
     var charDiv = document.createElement("div")
     var lines = document.getElementsByClassName("flexInnerColumn")
     var newLine = lines[lines.length-1]
-    wrappedOutput[1].style.paddingBottom = "1.36em"
     charDiv.className = "opChar"
     charDiv.innerHTML = char
     newLine.appendChild(charDiv)
     return true
+  }
+
+  function colorCodeNumeric(num) {
+    var charArr = num.toString().split("")
+    var rows = document.getElementsByClassName("flexInnerColumn")
+    var thisRow = rows[rows.length-1]
+    var thisLine = thisRow.firstChild
+    //wrappedOutput[1].style.paddingBottom = "0.16em"
+    thisLine.innerHTML = ""
+    for (let i = 0; i < charArr.length; i++) {
+        thisLine.appendChild(colorDivFactory(charArr[i]))
+    }
   }
 
   function colorDivFactory(val) {
@@ -113,18 +124,6 @@ function initFuncs() {
     charDiv.className = "char"
     charDiv.appendChild(charNode)
     return charDiv
-  }
-
-  function colorCodeNumeric(num) {
-    var charArr = num.toString().split("")
-    var rows = document.getElementsByClassName("flexInnerColumn")
-    var thisRow = rows[rows.length-1]
-    var thisLine = thisRow.firstChild
-    //wrappedOutput[1].style.paddingBottom = "0.16em"
-    thisLine.innerHTML = ""
-    for (let i = 0; i < charArr.length; i++) {
-        thisLine.appendChild(colorDivFactory(charArr[i]))
-    }
   }
   /*
   //
@@ -482,7 +481,7 @@ function initFuncs() {
   var subTotal = document.getElementById("subTotalBox")
   var controlPanel = document.getElementById("controlPanelBox")
   var controlPanelConsole = document.getElementById("controlPanelText")
-  var modals = document.getElementsByTagName("modal")
+  var modals = document.getElementsByClassName("modal")
   var closeModals = document.getElementsByClassName("closeModal")
   var radios = document.getElementsByTagName("modeButton")
   var clearButton = document.getElementsByClassName("clearButton")[0]
