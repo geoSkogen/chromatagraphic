@@ -19,8 +19,9 @@ function initFuncs() {
          classedElms[ii].addEventListener("click",function () {
          input.value += this.innerHTML
          tenKeyArg = isNaN(this.innerHTML) ?
-            this.innerHTML.slice(1,this.innerHTML.length-1) :
+            this.id :
             this.innerHTML
+        console.log(tenKeyArg)
          initTenKey(tenKeyArg, true)
        })
        keys.push(classedElms[ii])
@@ -50,6 +51,11 @@ function initFuncs() {
     }
     return true
   }
+
+  function makeNewLine() {}
+  function displayOperator() {}
+  function colorCodeNumeric() {}
+  /*
 
   function makeNewLine() {
     var innerRow = document.createElement("div")
@@ -89,6 +95,8 @@ function initFuncs() {
         thisLine.appendChild(colorDivFactory(charArr[i]))
     }
   }
+
+  */
 
   function colorDivFactory(val) {
     var numVal = -1
@@ -133,7 +141,7 @@ function initFuncs() {
   function initTenKey(signal, bool) {
     var val = cleanInputString(input.value)
     var valMinusOp
-    currentLine = document.getElementById("scrollToMe")
+    var currentLine = document.getElementById("scrollToMe")
     textBox.style.display = "block"
     if ((Number(signal) || signal == "point" || signal == "0")) {
       console.log("number - " + signal)
@@ -388,7 +396,7 @@ function initFuncs() {
     var total = 0
     if (trace.backtrace.length != 1) { trace.backtrace.push(Number(numStr)) }
     if (index != 5) { trace.backtrace.push(operatorHTML[index]) }
-    debug.innerHTML = trace.backtrace
+    //debug.innerHTML = trace.backtrace
     //console.log(trace.backtrace[-1])
     switch (index) {
       case 4 :
@@ -399,6 +407,7 @@ function initFuncs() {
         displayControlPanel()
       break
       default :
+        controller.opCount++
         displayOperator(index)
         if (controller.lineCalc) {
           total = trace.backtrace.length >= 4 ?
@@ -413,7 +422,7 @@ function initFuncs() {
   //_M__A__I__N_
   //
   */
-  var debug = document.getElementById("test1")
+  var debug = document.getElementById("debug")
   /*
   // Data-processing cocnern
   */
@@ -421,7 +430,9 @@ function initFuncs() {
   var falseOperator = false// did the keyboard keydown type two operators in a row?
   var trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
                 total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
-  var controller = { lineCalc : false, base: 10, operatorOnly: false }
+  var controller = { lineCalc : false, base: 10, operatorOnly: false,
+                      currentLines: [[],[],[],[]], opCount: 0 }
+
 
   trace.lineCalcSubTotal = function () {
     var args = [trace.total]
@@ -469,15 +480,15 @@ function initFuncs() {
   //DOM / View - concern
   */
   var app = document.getElementById("app")
-  var currentLine
+
   /*
   // Building the DOM
   */
   var keys = findKeys()
   var input = document.getElementById("theInput")
   var output = document.getElementById("theOutput")
-  var results = document.getElementById("resultsBox")
   var textBox = document.getElementById("textBox")
+  var results = document.getElementById("resultsBox")
   var subTotal = document.getElementById("subTotalBox")
   var controlPanel = document.getElementById("controlPanelBox")
   var controlPanelConsole = document.getElementById("controlPanelText")
@@ -506,23 +517,25 @@ function initFuncs() {
   input.addEventListener("keydown", function () {
     var val = this.value
     var index = operatorCodes.indexOf(event.keyCode)
+    var currenntLine = document.getElementById("scrollToMe")
     var validVal = ""
     var testOperator
-    currentLine = document.getElementById("scrollToMe")
     textBox.style.disply = "block"
     if (operator) {
       return false
     }
 
     if (index != -1 ) {
-      if (currentLine.innerHTML.length < 1) {
-        falseOperator = true
-        return false
-      } else {
-        operator = true
-        if (index != 4 ) { makeNewLine() }
-        listOperation(val,index)
-      }
+        if (controller.opCount >= 1 && currentLines[0][1].length < 1) {
+          falseOperator = true
+          return false
+        } else {
+          operator = true
+          if (index != 4 ) {
+            makeNewLine()
+          }
+          listOperation(val,index)
+        }
       //console.log(val)
     }
   })
@@ -534,7 +547,7 @@ function initFuncs() {
     var inputVal = this.value
     var validVal = ""
     var testOperator
-    currentLine = document.getElementById("scrollToMe")
+    var currentLine = document.getElementById("scrollToMe")
     if (!falseOperator) {
       textBox.style.display = "block"
     } else {
@@ -553,7 +566,9 @@ function initFuncs() {
       input.value = validVal
       if (testOperator) {
         //if (currentLine.innerHTML.length >= 1) {
-        if (testOperator != 4) { makeNewLine() }
+        if (testOperator != 4) {
+          makeNewLine()
+        }
         listOperation(validVal,testOperator)
         //console.log(validVal)
         operator = false

@@ -16,6 +16,7 @@
 
 </head>
 <body>
+<p id="debug"></p>
 <div class="flexOuterCenter">
   <div id="app">
     <div class="flexOuterCenter">
@@ -71,7 +72,7 @@
     </div>
     <!-- THIS IS A MODEL OF THE INVISIBLE INPUT -->
     <div class="flexOuterCenter">
-      <div class="inputPanel">
+      <div class="inputPanel" style="opacity: 1;">
         <div class="flexOuterCenter">
           <input type="text" id="theInput"/>
         </div>
@@ -81,12 +82,12 @@
     <div class="flexOuterCenter">
       <div class="colorCodeNumeric" style="display: block; border:3px solid red;" id="textBox">
         <div class="flexOuterColumn" id="theOutput">
-
+<!--
           <div class="flexInnerColumn">
             <div class="perspectiveShell_awayTop">
               <div class="flexOuterEnd">
                 <div class="flexOuterEnd">
-                  <!--<div class="char"></div>-->
+                  <div class="char"></div>
                 </div>
               </div>
             </div>
@@ -96,10 +97,10 @@
             <div class="perspectiveShell_awayBottom">
               <div class="flexOuterSpaceBetween">
                 <div class="flexOuterStart">
-                  <!--<div class="opCharStatic">&minus;</div>-->
+                  <div class="opCharStatic">&minus;</div>
                 </div>
                 <div class="flexOuterEnd">
-                  <!--<div class="char"></div>-->
+                  <div class="char"></div>
                 </div>
               </div>
             </div>
@@ -109,10 +110,10 @@
             <div class="perspectiveShell_relaxed">
               <div class="flexOuterSpaceBetween">
                 <div class="flexOuterStart">
-                  <!--<div class="opCharStatic">&plus;</div>-->
+                  <div class="opCharStatic">&plus;</div>
                 </div>
                 <div class="flexOuterEnd">
-                  <!--<div class="char" style="color:blue;">2</div>-->
+                  <div class="char" style="color:blue;">2</div>
                 </div>
               </div>
             </div>
@@ -122,10 +123,23 @@
             <div class="perspectiveShell">
               <div class="flexOuterSpaceBetween">
                 <div class="flexOuterStart">
-                  <!--<div class="opCharStatic">&minus;</div>-->
+                  <div class="opCharStatic">&minus;</div>
                 </div>
                 <div class="flexOuterEnd">
-                  <!--<div class="char" style="color:orangered">5</div>-->
+                  <div class="char" style="color:orangered">5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+-->
+          <div class="flexInnerColumn">
+            <div class="perspectiveShell">
+              <div class="flexOuterSpaceBetween">
+                <div class="flexOuterStart">
+                  <div class="opCharStatic">invs</div>
+                </div>
+                <div class="flexOuterEnd">
+                  <div class="char" id="scrollToMe">blank</div>
                 </div>
               </div>
             </div>
@@ -139,9 +153,9 @@
     <div id="tenKey">
       <div class="flexInnerCenter" id="tenKeyLeft">
         <div class="flexOuterSpace">
-          <div class="keyChar">&laquo;</div>
-          <div class="keyChar">&divide;</div>
-          <div class="keyChar">&times;</div>
+          <div class="keyChar" id="laquo">&#171;</div>
+          <div class="keyChar" id="divide">&#247;</div>
+          <div class="keyChar" id="times">&#215;</div>
           <div class="keyChar">7</div>
           <div class="keyChar">8</div>
           <div class="keyChar">9</div>
@@ -152,13 +166,13 @@
           <div class="keyChar">2</div>
           <div class="keyChar">3</div>
           <div class="keyCharLong">0</div>
-          <div class="keyChar">&period;</div>
+          <div class="keyChar" id="period">&#46;</div>
         </div>
         <div id="tenKeyRight">
           <div class="flexOuterColumn">
-            <div class="keyChar">&minus;</div>
-            <div class="keyCharTall">&plus;</div>
-            <div class="keyCharTall">&equals;</div>
+            <div class="keyChar" id="minus">&#8722;</div>
+            <div class="keyCharTall" id="plus">&#43;</div>
+            <div class="keyCharTall" id="equals">&#61;</div>
           </div>
         </div>
       </div>
