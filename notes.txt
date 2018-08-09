@@ -1,0 +1,25 @@
+function makeNewLine() {
+  var appendClasses = ["","_awayTop","_awayBottom","_relaxed","_basic"]
+  var baseClass = "perspectiveShell"
+  var divs = document.getElementsByTagName("div")
+  var newShell = {}
+  var removeMe = {}
+  var removeIndex = 0
+  var j = appendClasses.length
+  for (let i = 0; i < divs.length; i++) {
+    if (divs[i].className.indexOf(baseClass) != -1) {
+        divs[i].className = baseClass +
+                             appendClasses[appendClasses.length - j]
+        if (j === appendClasses.length) { removeIndex = i }
+        j -= 1
+        if (j === 1) {
+          newShell = makeViewComponent(baseClass +
+                               appendClasses[appendClasses.length - j])
+          document.getElementById("theOutput").appendChild(newShell)
+        }
+    }
+  }
+  //console.log(removeIndex.toString())
+  //console.log(divs[removeIndex].className)
+  removeMe = divs[removeIndex].parentNode
+  document.getElementById("theOutput").removeChild(removeMe)

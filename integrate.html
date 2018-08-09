@@ -82,12 +82,13 @@
     <div class="flexOuterCenter">
       <div class="colorCodeNumeric" style="display: block; border:3px solid red;" id="textBox">
         <div class="flexOuterColumn" id="theOutput">
-<!--
+
           <div class="flexInnerColumn">
             <div class="perspectiveShell_awayTop">
-              <div class="flexOuterEnd">
+              <div class="flexOuterSpaceBetween">
+                <div class="flexOuterStart">
+                </div>
                 <div class="flexOuterEnd">
-                  <div class="char"></div>
                 </div>
               </div>
             </div>
@@ -97,10 +98,8 @@
             <div class="perspectiveShell_awayBottom">
               <div class="flexOuterSpaceBetween">
                 <div class="flexOuterStart">
-                  <div class="opCharStatic">&minus;</div>
                 </div>
                 <div class="flexOuterEnd">
-                  <div class="char"></div>
                 </div>
               </div>
             </div>
@@ -110,36 +109,19 @@
             <div class="perspectiveShell_relaxed">
               <div class="flexOuterSpaceBetween">
                 <div class="flexOuterStart">
-                  <div class="opCharStatic">&plus;</div>
                 </div>
                 <div class="flexOuterEnd">
-                  <div class="char" style="color:blue;">2</div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="flexInnerColumn">
-            <div class="perspectiveShell">
+            <div class="perspectiveShell_basic">
               <div class="flexOuterSpaceBetween">
-                <div class="flexOuterStart">
-                  <div class="opCharStatic">&minus;</div>
+                <div class="flexOuterStart" id="currentOperator">
                 </div>
-                <div class="flexOuterEnd">
-                  <div class="char" style="color:orangered">5</div>
-                </div>
-              </div>
-            </div>
-          </div>
--->
-          <div class="flexInnerColumn">
-            <div class="perspectiveShell">
-              <div class="flexOuterSpaceBetween">
-                <div class="flexOuterStart">
-                  <div class="opCharStatic">invs</div>
-                </div>
-                <div class="flexOuterEnd">
-                  <div class="char" id="scrollToMe">blank</div>
+                <div class="flexOuterEnd" id="currentLine">
                 </div>
               </div>
             </div>

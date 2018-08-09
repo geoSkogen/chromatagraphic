@@ -52,9 +52,40 @@ function initFuncs() {
     return true
   }
 
-  function makeNewLine() {}
-  function displayOperator() {}
-  function colorCodeNumeric() {}
+  function makeViewComponent(appendClass) {
+    var outerShell = document.createElement("div")
+    var perspectiveShell = document.createElement("div")
+    var flexShell = document.createElement("div")
+    var opShell = document.createElement("div")
+    var charShell = document.createElement("div")
+    outerShell.className = "flexInnerColumn"
+    perspectiveShell.className = "perspectiveShell" + appendClass
+    flexShell.className = "flexOuterBetween"
+    opShell.className = "flexOuterStart"
+    charShell.className = "flexOuterEnd"
+    if (appendClass === "_basic") {
+      document.getElementById("currentOperator").id = ""
+      document.getElementById("currentLine").id = ""
+      opShell.id = currentOperator
+      charShell.id = currentLine
+    }
+    flexShell.appendChild(opShell)
+    flexShell.appendChild(charShell)
+    perspectiveShell.appendChild(flexShell)
+    outerShell.appendChild(perspectiveShell)
+    return outerShell
+  }
+
+  function makeNewLine() {
+    var appendClasses = ["_awayTop","_awayBottom","_relaxed","_basic"]
+    console.log("this is makeNewLine()")
+  }
+  function displayOperator() {
+    console.log("this is displayOperator()")
+  }
+  function colorCodeNumeric() {
+    console.log("this is colorCodeNumeric()")
+  }
   /*
 
   function makeNewLine() {
@@ -141,18 +172,18 @@ function initFuncs() {
   function initTenKey(signal, bool) {
     var val = cleanInputString(input.value)
     var valMinusOp
-    var currentLine = document.getElementById("scrollToMe")
+    var currentLine = document.getElementById("currentLine")
     textBox.style.display = "block"
-    if ((Number(signal) || signal == "point" || signal == "0")) {
+    if ((Number(signal) || signal == "period" || signal == "0")) {
       console.log("number - " + signal)
       console.log(input.value)
       colorCodeNumeric(val)
     } else {
       input.value = ""
-      if (currentLine.innerHTML.length >= 1) {
-        console.log("operator - " + signal)
-        console.log(input.value)
-        if (signal != "equals") { makeNewLine() }
+      console.log("operator - " + signal)
+      console.log(input.value)
+      if (currentLine.innerHTML) {
+        if (signal != "equals" && signal != "laquo") { makeNewLine() }
         valMinusOp = val.slice(0,input.value.length-1)
         listOperation(val,operatorHTML.indexOf("&" + signal + ";"))
         controller.operatorOnly = false
@@ -431,8 +462,11 @@ function initFuncs() {
   var trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
                 total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
   var controller = { lineCalc : false, base: 10, operatorOnly: false,
-                      currentLines: [[],[],[],[]], opCount: 0 }
-
+                      currentLines: [
+                      [],[],[],
+                      [null,document.getElementById("currentLine")]
+                      ],
+                      opCount: 0 }
 
   trace.lineCalcSubTotal = function () {
     var args = [trace.total]
@@ -494,7 +528,7 @@ function initFuncs() {
   var controlPanelConsole = document.getElementById("controlPanelText")
   var modals = document.getElementsByClassName("modal")
   var closeModals = document.getElementsByClassName("closeModal")
-  var radios = document.getElementsByTagName("modeButton")
+  var radios = document.getElementsByClassName("modeButton")
   var clearButton = document.getElementsByClassName("clearButton")[0]
   clearButton.addEventListener("click", clearOperation)
   for (let i = 0; i < radios.length; i++) {
@@ -517,7 +551,7 @@ function initFuncs() {
   input.addEventListener("keydown", function () {
     var val = this.value
     var index = operatorCodes.indexOf(event.keyCode)
-    var currenntLine = document.getElementById("scrollToMe")
+    var currenntLine = document.getElementById("currentLine")
     var validVal = ""
     var testOperator
     textBox.style.disply = "block"
@@ -526,7 +560,10 @@ function initFuncs() {
     }
 
     if (index != -1 ) {
-        if (controller.opCount >= 1 && currentLines[0][1].length < 1) {
+      //prevents two operators in a row:
+      //if it's not the first line, and there are no numeric characters entered yet
+      //the user cannot type an operator
+        if (controller.opCount >= 1 && currentLine.length < 1) {
           falseOperator = true
           return false
         } else {
@@ -534,6 +571,7 @@ function initFuncs() {
           if (index != 4 ) {
             makeNewLine()
           }
+          input.value = ""
           listOperation(val,index)
         }
       //console.log(val)
@@ -547,19 +585,16 @@ function initFuncs() {
     var inputVal = this.value
     var validVal = ""
     var testOperator
-    var currentLine = document.getElementById("scrollToMe")
+    var currentLine = document.getElementById("currentLine")
     if (!falseOperator) {
       textBox.style.display = "block"
     } else {
-      if (document.getElementsByClassName("flexInnerColumn").length == 1) {
-        textBox.style.display = "none"
-      }
       falseOperator = false
     }
     //this is basically error-proofing against fat-fingering the 10key on an
     //actual keyboard - if there are mulitple keys down, the first operator key
     //that is released will register as the current operator and end the line
-    if (!operator) {
+    if (!operator && !falseOperator) {
       testOperator = parseInputString(inputVal)
       //console.log(testOperator)
       validVal = cleanInputString(inputVal)
@@ -569,6 +604,7 @@ function initFuncs() {
         if (testOperator != 4) {
           makeNewLine()
         }
+        input.value = ""
         listOperation(validVal,testOperator)
         //console.log(validVal)
         operator = false
