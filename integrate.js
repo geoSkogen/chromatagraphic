@@ -52,23 +52,21 @@ function initFuncs() {
     return true
   }
 
-  function makeViewComponent(appendClass) {
+  function makeViewComponent(classStr) {
     var outerShell = document.createElement("div")
     var perspectiveShell = document.createElement("div")
     var flexShell = document.createElement("div")
     var opShell = document.createElement("div")
     var charShell = document.createElement("div")
     outerShell.className = "flexInnerColumn"
-    perspectiveShell.className = "perspectiveShell" + appendClass
+    perspectiveShell.className = classStr
     flexShell.className = "flexOuterBetween"
     opShell.className = "flexOuterStart"
     charShell.className = "flexOuterEnd"
-    if (appendClass === "_basic") {
-      document.getElementById("currentOperator").id = ""
-      document.getElementById("currentLine").id = ""
-      opShell.id = currentOperator
-      charShell.id = currentLine
-    }
+    document.getElementById("currentOperator").id = ""
+    document.getElementById("currentLine").id = ""
+    opShell.id = "currentOperator"
+    charShell.id = "currentLine"
     flexShell.appendChild(opShell)
     flexShell.appendChild(charShell)
     perspectiveShell.appendChild(flexShell)
@@ -78,6 +76,55 @@ function initFuncs() {
 
   function makeNewLine() {
     var appendClasses = ["_awayTop","_awayBottom","_relaxed","_basic"]
+    var baseClass = "perspectiveShell"
+    var shellElms = []
+    var elmsByType = { operators: [], lines: [] }
+    var dataByType = { opSymbols: [], lineDivs: [] }
+    var elm = {}
+    var className = ""
+    for (let i = 0; i < appendClasses.length; i++) {
+      className = baseClass + appendClasses[i]
+      elm = document.getElementsByClassName(className)[0]
+      shellElms.push(elm)
+      elmsByType.operators.push(elm.children[0].children[0])
+      elmsByType.lines.push(elm.children[0].children[1])
+      dataByType.opSymbols.push(elm.children[0].children[0].innerHTML)
+      dataByType.lineDivs.push(elm.children[0].children[1].innerHTML)
+    }
+    dataByType.opSymbols.shift()
+    dataByType.lineDivs.shift()
+    dataByType.opSymbols.push("")
+    dataByType.lineDivs.push("")
+    for (let i = 0; i < elmsByType.lines; i++ ) {}
+
+
+    //for (let i = 0; i < ) {}
+    /*
+    var appendClasses = ["","_awayTop","_awayBottom","_relaxed","_basic"]
+    var baseClass = "perspectiveShell"
+    var divs = document.getElementsByTagName("div")
+    var newShell = {}
+    var removeMe = {}
+    var removeIndex = 0
+    var j = appendClasses.length
+    for (let i = 0; i < divs.length; i++) {
+      if (divs[i].className.indexOf(baseClass) != -1) {
+          divs[i].className = baseClass +
+                               appendClasses[appendClasses.length - j]
+          if (j === appendClasses.length) { removeIndex = i }
+          j -= 1
+          if (j === 1) {
+            newShell = makeViewComponent(baseClass +
+                                 appendClasses[appendClasses.length - j])
+            document.getElementById("theOutput").appendChild(newShell)
+          }
+      }
+    }
+    //console.log(removeIndex.toString())
+    //console.log(divs[removeIndex].className)
+    removeMe = divs[removeIndex].parentNode
+    document.getElementById("theOutput").removeChild(removeMe)
+    */
     console.log("this is makeNewLine()")
   }
   function displayOperator() {
@@ -265,6 +312,8 @@ function initFuncs() {
     trace.total = 0
     trace.reRacks = 0
     trace.backtrace = []
+    controller.history = [[]]
+    controller.opCount = 0
   }
 
   function calculateResults() {
@@ -427,8 +476,14 @@ function initFuncs() {
     var total = 0
     if (trace.backtrace.length != 1) { trace.backtrace.push(Number(numStr)) }
     if (index != 5) { trace.backtrace.push(operatorHTML[index]) }
+    if (controller.opCount === 0) {
+      controller.history[controller.opCount].push(null)
+    }
+    controller.history[controller.opCount].push(numStr)
+    controller.history.push([])
+    controller.history[controller.opCount+1].push(operatorHTML[index])
     //debug.innerHTML = trace.backtrace
-    //console.log(trace.backtrace[-1])
+    //console.log(controller.history)
     switch (index) {
       case 4 :
         total = calculateResults()
@@ -462,11 +517,7 @@ function initFuncs() {
   var trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
                 total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
   var controller = { lineCalc : false, base: 10, operatorOnly: false,
-                      currentLines: [
-                      [],[],[],
-                      [null,document.getElementById("currentLine")]
-                      ],
-                      opCount: 0 }
+                      history: [[]],  opCount: 0 }
 
   trace.lineCalcSubTotal = function () {
     var args = [trace.total]
@@ -563,7 +614,7 @@ function initFuncs() {
       //prevents two operators in a row:
       //if it's not the first line, and there are no numeric characters entered yet
       //the user cannot type an operator
-        if (controller.opCount >= 1 && currentLine.length < 1) {
+        if (controller.opCount >= 1 && !(currentLine.innerHTML)) {
           falseOperator = true
           return false
         } else {
