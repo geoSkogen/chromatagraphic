@@ -17,12 +17,9 @@ function initFuncs() {
      classedElms = document.getElementsByClassName(classNames[i])
      for (let ii = 0; ii < classedElms.length; ii++) {
          classedElms[ii].addEventListener("click",function () {
-         input.value += this.innerHTML
-         tenKeyArg = isNaN(this.innerHTML) ?
-            this.id :
-            this.innerHTML
-        console.log(tenKeyArg)
-         initTenKey(tenKeyArg, true)
+           tenKeyArg = isNaN(this.innerHTML) ? this.id : this.innerHTML
+           console.log("argument sent to initTenKey(" + tenKeyArg + ")")
+           initTenKey(tenKeyArg, true)
        })
        keys.push(classedElms[ii])
      }
@@ -52,29 +49,7 @@ function initFuncs() {
     return true
   }
 
-  function makeViewComponent(classStr) {
-    var outerShell = document.createElement("div")
-    var perspectiveShell = document.createElement("div")
-    var flexShell = document.createElement("div")
-    var opShell = document.createElement("div")
-    var charShell = document.createElement("div")
-    outerShell.className = "flexInnerColumn"
-    perspectiveShell.className = classStr
-    flexShell.className = "flexOuterBetween"
-    opShell.className = "flexOuterStart"
-    charShell.className = "flexOuterEnd"
-    document.getElementById("currentOperator").id = ""
-    document.getElementById("currentLine").id = ""
-    opShell.id = "currentOperator"
-    charShell.id = "currentLine"
-    flexShell.appendChild(opShell)
-    flexShell.appendChild(charShell)
-    perspectiveShell.appendChild(flexShell)
-    outerShell.appendChild(perspectiveShell)
-    return outerShell
-  }
-
-  function makeNewLine() {
+  function makeNewLine(recursive) {
     var appendClasses = ["_awayTop","_awayBottom","_relaxed","_basic"]
     var baseClass = "perspectiveShell"
     var shellElms = []
@@ -86,8 +61,6 @@ function initFuncs() {
       className = baseClass + appendClasses[i]
       elm = document.getElementsByClassName(className)[0]
       shellElms.push(elm)
-      elmsByType.operators.push(elm.children[0].children[0])
-      elmsByType.lines.push(elm.children[0].children[1])
       dataByType.opSymbols.push(elm.children[0].children[0].innerHTML)
       dataByType.lineDivs.push(elm.children[0].children[1].innerHTML)
     }
@@ -95,62 +68,24 @@ function initFuncs() {
     dataByType.lineDivs.shift()
     dataByType.opSymbols.push("")
     dataByType.lineDivs.push("")
-    for (let i = 0; i < elmsByType.lines; i++ ) {}
-
-
-    //for (let i = 0; i < ) {}
-    /*
-    var appendClasses = ["","_awayTop","_awayBottom","_relaxed","_basic"]
-    var baseClass = "perspectiveShell"
-    var divs = document.getElementsByTagName("div")
-    var newShell = {}
-    var removeMe = {}
-    var removeIndex = 0
-    var j = appendClasses.length
-    for (let i = 0; i < divs.length; i++) {
-      if (divs[i].className.indexOf(baseClass) != -1) {
-          divs[i].className = baseClass +
-                               appendClasses[appendClasses.length - j]
-          if (j === appendClasses.length) { removeIndex = i }
-          j -= 1
-          if (j === 1) {
-            newShell = makeViewComponent(baseClass +
-                                 appendClasses[appendClasses.length - j])
-            document.getElementById("theOutput").appendChild(newShell)
-          }
-      }
+    if (recursive) {
+      dataByType.opSymbols = ["","","",""]
+      dataByType.lineDivs = ["","","",""]
     }
-    //console.log(removeIndex.toString())
-    //console.log(divs[removeIndex].className)
-    removeMe = divs[removeIndex].parentNode
-    document.getElementById("theOutput").removeChild(removeMe)
-    */
+    for (let i = 0; i < elmsByType.lines; i++ ) {
+      elmsByType.operators[i].innerHTML = dataByType.opSymbols[i]
+      elmsByType.lines[i].innerHTML = dataByType.ineDivs[i]
+    }
+
     console.log("this is makeNewLine()")
   }
   function displayOperator() {
     console.log("this is displayOperator()")
   }
-  function colorCodeNumeric() {
-    console.log("this is colorCodeNumeric()")
+  function colorCodeNumeric(str) {
+    console.log("this is colorCodeNumeric(" + str + ")")
   }
   /*
-
-  function makeNewLine() {
-    var innerRow = document.createElement("div")
-    var newLine = document.createElement("div")
-    var oldLine
-    if (document.getElementById("scrollToMe")) {
-      oldLine = document.getElementById("scrollToMe")
-      oldLine.id = ""
-    }
-    newLine.id = "scrollToMe"
-    newLine.className = "flexOuterEnd"
-    innerRow.className = "flexInnerColumn"
-    innerRow.appendChild(newLine)
-    output.appendChild(innerRow)
-    input.value = ""
-  }
-
   function displayOperator(indexNo) {
     var char = operatorHTML[indexNo]
     var charDiv = document.createElement("div")
@@ -216,30 +151,6 @@ function initFuncs() {
   // Data-processing cocnern
   //
   */
-  function initTenKey(signal, bool) {
-    var val = cleanInputString(input.value)
-    var valMinusOp
-    var currentLine = document.getElementById("currentLine")
-    textBox.style.display = "block"
-    if ((Number(signal) || signal == "period" || signal == "0")) {
-      console.log("number - " + signal)
-      console.log(input.value)
-      colorCodeNumeric(val)
-    } else {
-      input.value = ""
-      console.log("operator - " + signal)
-      console.log(input.value)
-      if (currentLine.innerHTML) {
-        if (signal != "equals" && signal != "laquo") { makeNewLine() }
-        valMinusOp = val.slice(0,input.value.length-1)
-        listOperation(val,operatorHTML.indexOf("&" + signal + ";"))
-        controller.operatorOnly = false
-      } else {
-        if (signal === "laquo") { displayControlPanel() }
-      }
-    }
-  }
-
   function cleanInputString(badinput) {
     var goodinput = ""
     var badarray = badinput.split("")
@@ -297,23 +208,6 @@ function initFuncs() {
       }
     }
     return runningtotal
-  }
-
-  function clearOperation() {
-    output.innerHTML = ""
-    makeNewLine()
-    textBox.style.display = "none"
-    //subTotal.style.display = "none"
-    results.style.display = "none"
-    document.getElementById("resultsText").innerHTML = ""
-    document.getElementById("subTotalText").innerHTML = ""
-    debug.innerHTML = ""
-    trace.reRack()
-    trace.total = 0
-    trace.reRacks = 0
-    trace.backtrace = []
-    controller.history = [[]]
-    controller.opCount = 0
   }
 
   function calculateResults() {
@@ -462,8 +356,7 @@ function initFuncs() {
     trace.reRack()
     //input.focus()
     input.value = ""
-    console.log("sum:")
-    console.log(sum)
+    console.log("sum: " + sum)
     return sum
   }
 
@@ -472,16 +365,9 @@ function initFuncs() {
   }
 
   function listOperation(numStr,index) {
-    var operator = []
     var total = 0
     if (trace.backtrace.length != 1) { trace.backtrace.push(Number(numStr)) }
     if (index != 5) { trace.backtrace.push(operatorHTML[index]) }
-    if (controller.opCount === 0) {
-      controller.history[controller.opCount].push(null)
-    }
-    controller.history[controller.opCount].push(numStr)
-    controller.history.push([])
-    controller.history[controller.opCount+1].push(operatorHTML[index])
     //debug.innerHTML = trace.backtrace
     //console.log(controller.history)
     switch (index) {
@@ -493,7 +379,8 @@ function initFuncs() {
         displayControlPanel()
       break
       default :
-        controller.opCount++
+        controller.opCount += 1
+
         displayOperator(index)
         if (controller.lineCalc) {
           total = trace.backtrace.length >= 4 ?
@@ -503,6 +390,59 @@ function initFuncs() {
         }
     }
   }
+
+  function initTenKey(signal, bool) {
+    console.log("controller.history = " + controller.history)
+    textBox.style.display = "block"
+    if ((Number(signal) || signal == "period" || signal == "0")) {
+      console.log("virtual 10Key log: number - " + signal)
+      //console.log("hidden input value: " + input.value)
+      if (!controller.operatorOnly) {
+        if (controller.history[controller.opCount].length === 1) {
+          controller.history[controller.opCount].push(signal)
+          console.log("pushed first arg : " + signal + ", to opCount: " + controller.opCount)
+        } else {
+          controller.history[controller.opCount][1] += signal
+        }
+        colorCodeNumeric(controller.history[controller.opCount][1])
+      }
+    } else {
+      console.log("virtual 10Key log: operator - " + signal)
+      //console.log("hidden input value: " + input.value)
+      //input.value = ""
+      if (controller.history[controller.opCount].length === 2) {
+        if (signal != "equals" && signal != "laquo") {
+          makeNewLine(false)
+        }
+        controller.history.push([])
+        controller.history[controller.opCount + 1].push(signal)
+        listOperation(
+          controller.history[controller.opCount][1],
+          operatorHTML.indexOf("&" + signal + ";")
+        )
+        controller.operatorOnly = false
+      } else {
+        if (signal === "laquo") {
+          displayControlPanel()
+        }
+      }
+    }
+  }
+
+  function clearOperation() {
+    makeNewLine(true)
+    textBox.style.display = "none"
+    //subTotal.style.display = "none"
+    results.style.display = "none"
+    document.getElementById("resultsText").innerHTML = ""
+    document.getElementById("subTotalText").innerHTML = ""
+    debug.innerHTML = ""
+    trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
+              total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
+    controller = { lineCalc : false, base: 10, operatorOnly: false,
+                   history: [[null]],  opCount: 0 }
+  }
+
   /*
   //
   //_M__A__I__N_
@@ -510,14 +450,44 @@ function initFuncs() {
   */
   var debug = document.getElementById("debug")
   /*
+  // References
+  */
+  var parenths = ["(",")"]
+  var ops = ["+","-","*","/","="]
+  var operatorHTML = [
+    "&plus;","&minus;","&times;","&divide;","&equals;","&laquo;"
+    ]
+  var operatorCodes = [107,109,106,111,13]
+  var tenKeyCodes = [96,97,98,99,100,101,102,103,104,105,110]
+  var numKeyCodes = [48,89,50,51,52,53,54,55,56,57]
+  var shift = 16
+  var boolArr = [false, true]
+  var displayArr = ["none","block"]
+  /*
+  //DOM / View - concern
+  */
+  var app = document.getElementById("app")
+
+  /*
+  // Building the DOM
+  */
+  var keys = findKeys()
+  var output = document.getElementById("theOutput")
+  var textBox = document.getElementById("textBox")
+  var results = document.getElementById("resultsBox")
+  var subTotal = document.getElementById("subTotalBox")
+  var controlPanel = document.getElementById("controlPanelBox")
+  var controlPanelConsole = document.getElementById("controlPanelText")
+  var modals = document.getElementsByClassName("modal")
+  var closeModals = document.getElementsByClassName("closeModal")
+  var radios = document.getElementsByClassName("modeButton")
+  var clearButton = document.getElementsByClassName("clearButton")[0]
+  /*
   // Data-processing cocnern
   */
-  var operator = false// did the keyboard keydown event just type an operator?
-  var falseOperator = false// did the keyboard keydown type two operators in a row?
-  var trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
-                total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
-  var controller = { lineCalc : false, base: 10, operatorOnly: false,
-                      history: [[]],  opCount: 0 }
+  var trace = {}
+  var controller = {}
+  clearOperation()
 
   trace.lineCalcSubTotal = function () {
     var args = [trace.total]
@@ -547,40 +517,7 @@ function initFuncs() {
     trace.backtrace.push(trace.total)
     trace.reRacks += 1
   }
-  /*
-  // References
-  */
-  var parenths = ["(",")"]
-  var ops = ["+","-","*","/","="]
-  var operatorHTML = [
-    "&plus;","&minus;","&times;","&divide;","&equals;","&laquo;"
-    ]
-  var operatorCodes = [107,109,106,111,13]
-  var tenKeyCodes = [96,97,98,99,100,101,102,103,104,105]
-  var numKeyCodes = [48,89,50,51,52,53,54,55,56,57]
-  var shift = 16
-  var boolArr = [false, true]
-  var displayArr = ["none","block"]
-  /*
-  //DOM / View - concern
-  */
-  var app = document.getElementById("app")
 
-  /*
-  // Building the DOM
-  */
-  var keys = findKeys()
-  var input = document.getElementById("theInput")
-  var output = document.getElementById("theOutput")
-  var textBox = document.getElementById("textBox")
-  var results = document.getElementById("resultsBox")
-  var subTotal = document.getElementById("subTotalBox")
-  var controlPanel = document.getElementById("controlPanelBox")
-  var controlPanelConsole = document.getElementById("controlPanelText")
-  var modals = document.getElementsByClassName("modal")
-  var closeModals = document.getElementsByClassName("closeModal")
-  var radios = document.getElementsByClassName("modeButton")
-  var clearButton = document.getElementsByClassName("clearButton")[0]
   clearButton.addEventListener("click", clearOperation)
   for (let i = 0; i < radios.length; i++) {
     radios[i].onchange = function () {
@@ -593,81 +530,59 @@ function initFuncs() {
       clickToClose(closeModals[i],modals[i])
     }
   }
-  //
-  window.addEventListener("keydown", function () {input.focus()})
-  /*
-  // The hidden input listens for keyboard events
-  */
-  // 1. Waits for operator input: +,-,*,/,enter on keydown
-  input.addEventListener("keydown", function () {
-    var val = this.value
-    var index = operatorCodes.indexOf(event.keyCode)
-    var currenntLine = document.getElementById("currentLine")
-    var validVal = ""
-    var testOperator
+  window.addEventListener("keydown", function () {
     textBox.style.disply = "block"
-    if (operator) {
-      return false
-    }
-
-    if (index != -1 ) {
+  })
+  // 1. Waits for operator input: +,-,*,/,enter, or ten-key number on keydown
+  window.addEventListener("keydown", function () {
+    var inputVal = this.value
+    var opIndex = operatorCodes.indexOf(event.keyCode)
+    var numIndex = tenKeyCodes.indexOf(event.keyCode)
+    var validVal = ""
+    var currentLine
+    if (opIndex != -1 ) {
       //prevents two operators in a row:
       //if it's not the first line, and there are no numeric characters entered yet
       //the user cannot type an operator
-        if (controller.opCount >= 1 && !(currentLine.innerHTML)) {
-          falseOperator = true
-          return false
-        } else {
-          operator = true
-          if (index != 4 ) {
-            makeNewLine()
-          }
-          input.value = ""
-          listOperation(val,index)
-        }
-      //console.log(val)
-    }
-  })
-  // 2. Binds view to keyboard input--
-  //  - starts a new line if the last character was an operator
-  //  - will process all sting-input (not keyCoded, e.g. mobile keypad input)
-  //  operators, except "+" for whatever reason
-  input.addEventListener("keyup", function () {
-    var inputVal = this.value
-    var validVal = ""
-    var testOperator
-    var currentLine = document.getElementById("currentLine")
-    if (!falseOperator) {
-      textBox.style.display = "block"
-    } else {
-      falseOperator = false
-    }
-    //this is basically error-proofing against fat-fingering the 10key on an
-    //actual keyboard - if there are mulitple keys down, the first operator key
-    //that is released will register as the current operator and end the line
-    if (!operator && !falseOperator) {
-      testOperator = parseInputString(inputVal)
-      //console.log(testOperator)
-      validVal = cleanInputString(inputVal)
-      input.value = validVal
-      if (testOperator) {
-        //if (currentLine.innerHTML.length >= 1) {
-        if (testOperator != 4) {
-          makeNewLine()
-        }
-        input.value = ""
-        listOperation(validVal,testOperator)
-        //console.log(validVal)
-        operator = false
-        controller.operatorOnly = false
-        //}
+      if (controller.opCount >= 1 && controller.history[opCount].length === 1) {
+        return false
+        console.log("physical tenKey detected falseOperator")
       } else {
-        colorCodeNumeric(validVal)
+        controller.history[controller.opCount].push(
+          operatorHTML[opIndex].slice(1,operatorHTML[opIndex].length - 1)
+        )
+        if (opIndex != 4 && opIndex != 5) {
+          makeNewLine(false)
+        }
+        listOperation(controller.history[controller.opCount][1],opIndex)
+        console.log("physical tenKey detected operator:  " +
+          operatorHTML[opIndex].slice(
+            1,
+            operatorHTML[opIndex].length -1)
+        )
+        controller.operatorOnly = false
       }
-    } else {
-      operator = false
-      controller.operatorOnly = false
-      //makeNewLine()
+    }
+
+    if (numIndex != -1) {
+      if (numIndex === 10 && currentLine.indexOf(".") === -1) {
+        validVal = "."
+      } else {
+        validVal = ""
+      }
+      validVal = numIndex.toString()
+      if (controller.history[controller.opCount].length === 1) {
+        controller.history[controller.opCount].push(validVal)
+      } else {
+        controller.history[controller.opCount][1] += validVal
+      }
+      colorCodeNumeric(controller.history[controller.opCount][1])
+      console.log("physical tenKey detected argument: " + validVal)
+      console.log(
+        "calling colorCodeNumeric(" +
+        controller.history[controller.opCount][1] +
+        ")"
+      )
     }
   })
 }
