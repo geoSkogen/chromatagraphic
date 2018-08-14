@@ -2,6 +2,26 @@ body {
   background-color: black;
 }
 
+a:link {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+a:hover {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+a:visited {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+a:active {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
 #app {
   position: relative;
   height: 620px;
@@ -424,6 +444,12 @@ form {
   padding: 1em;
 }
 
+.smallTitle {
+  font-size: 16px;
+  padding: 1.33em;
+  margin: 1.33em;
+}
+
 .radioLabel {
   font-size: 20px;
 }
@@ -438,17 +464,24 @@ input[type="radio"] {
 
 }
 
-.clearButton {
+.clearButton,
+.clearButtonSmall {
   padding: 0.66em;
   border: 1px solid whitesmoke;
   border-radius: 3px;
   margin: 1.66em;
   cursor: pointer;
   opacity: 0.9;
-  font-size: 18px;
+  font-size: 20px;
 }
 
-.clearButton:hover {
+.clearButtonSmall {
+  margin: 0.66em;
+  font-size: 14px;
+}
+
+.clearButton:hover,
+.clearButtonSmall:hover {
   //color: black;
   background-color: orangered;
   opacity: 0.8;
