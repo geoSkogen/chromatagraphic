@@ -8,6 +8,7 @@ function initFuncs() {
 // this is the DOM/view concern
 //
 */
+//adds click event to tenKey HTML elements
  function findKeys() {
    var classNames = ["keyChar","keyCharLong","keyCharTall"]
    var keys = []
@@ -18,6 +19,7 @@ function initFuncs() {
      for (let ii = 0; ii < classedElms.length; ii++) {
          classedElms[ii].addEventListener("click",function () {
            tenKeyArg = isNaN(this.innerHTML) ? this.id : this.innerHTML
+           if (this.id === "period") { tenKeyArg = "." }
            console.log("argument sent to initTenKey(" + tenKeyArg + ")")
            initTenKey(tenKeyArg, true)
        })
@@ -48,7 +50,11 @@ function initFuncs() {
     }
     return true
   }
-
+  /*
+  all this does is shift the .innerHTML "down" the DOM ('up' the page),
+  leaving the last one blank--giving the illusion of scrolling--if its argument
+  is false; true fills the .innerHTML with empty strings & leaves everything blank
+  */
   function makeNewLine(recursive) {
     var appendClasses = ["_awayTop","_awayBottom","_relaxed","_basic"]
     var baseClass = "perspectiveShell"
@@ -76,11 +82,11 @@ function initFuncs() {
       elmsByType.operators[i].innerHTML = dataByType.opSymbols[i]
       elmsByType.lines[i].innerHTML = dataByType.ineDivs[i]
     }
-
-    console.log("this is makeNewLine()")
+    console.log("this is makeNewLine(" + recursive + ")")
   }
-  function displayOperator() {
-    console.log("this is displayOperator()")
+  function displayOperator(indexNo) {
+
+    console.log("this is displayOperator(" + indexNo + ")")
   }
   function colorCodeNumeric(str) {
     console.log("this is colorCodeNumeric(" + str + ")")
@@ -110,7 +116,9 @@ function initFuncs() {
   }
 
   */
-
+  //takes a string (currently a char),
+  //color-codes it (currently numerically),
+  //and returns it in a div
   function colorDivFactory(val) {
     var numVal = -1
     var colors = [
@@ -151,35 +159,6 @@ function initFuncs() {
   // Data-processing cocnern
   //
   */
-  function cleanInputString(badinput) {
-    var goodinput = ""
-    var badarray = badinput.split("")
-    var len = badarray.length
-    var isFloat = false
-    for (let i = 0; i < len; i++) {
-      if (!isNaN(badarray[i]) || (badarray[i] == "." && !isFloat)) {
-        goodinput += badarray[i]
-        if (goodinput[i] == ".") {
-          isFloat = true
-        }
-      }
-    }
-    return goodinput
-  }
-
-  function parseInputString(mobileinput) {
-    var readarray = mobileinput.split("")
-    var len = readarray.length
-    var result = false
-    for (let i = 0; i < len; i++) {
-      if (ops.indexOf(readarray[i]) != -1) {
-        result = ops.indexOf(readarray[i])
-        break
-      }
-    }
-    return result
-  }
-
   function mult(subtotal,arg) {
     return subtotal *= arg
   }
@@ -191,7 +170,7 @@ function initFuncs() {
   function rack(subtotal, arg) {
     return subtotal += arg
   }
-
+  //extensible switch for recurring arithetic operations
   function recursiveOps(arr,needsFirstArg,arg,verb) {
     var runningtotal = needsFirstArg? arg : arr[0]
     var startloop = needsFirstArg? 0 : 1
@@ -209,9 +188,18 @@ function initFuncs() {
     }
     return runningtotal
   }
-
+  /*
+  performs a long list of calculations in order of operations -
+  mutliplication and division happen first,
+  and their products are substitutied into a long addition problem
+  1) multDiv
+  2) substitutionOperation
+  3) traceOperation
+  4) localVars
+  5) mainLogic
+  */
   function calculateResults() {
-
+    // 1
     function multDivOperation(index) {
       var subvalue = 0
       var truevalue = 0
@@ -245,7 +233,7 @@ function initFuncs() {
       }
       return truevalue
     }
-
+    // 2
     function substitutionOperation() {
       var newbacktrace = trace.backtrace
       var returnbacktrace = []
@@ -265,7 +253,7 @@ function initFuncs() {
       console.log(trace.subVals)
       return returnbacktrace
     }
-
+    // 3
     function traceOperation(index,isNewStage,isMultDiv) {
       var verb = trace.backtrace[index].slice(1,trace.backtrace[index].length-1)
       if (isNewStage) {
@@ -300,10 +288,11 @@ function initFuncs() {
     /*
     //_calculateResults _M__A__I__N_
     */
+    // 4
     var sumArr = []
     var summary = []
     var sum = 0
-
+    // 5
     trace.indexMultDiv = false
     if (trace.backtrace.length == 2 && trace.backtrace[1] == "&equals;") {
       sum = trace.backtrace[0]
@@ -354,8 +343,6 @@ function initFuncs() {
       }
     }
     trace.reRack()
-    //input.focus()
-    input.value = ""
     console.log("sum: " + sum)
     return sum
   }
@@ -363,13 +350,11 @@ function initFuncs() {
   function undoLastEntry() {
     return true
   }
-
+  // routes commands, records valid user entries
   function listOperation(numStr,index) {
     var total = 0
     if (trace.backtrace.length != 1) { trace.backtrace.push(Number(numStr)) }
     if (index != 5) { trace.backtrace.push(operatorHTML[index]) }
-    //debug.innerHTML = trace.backtrace
-    //console.log(controller.history)
     switch (index) {
       case 4 :
         total = calculateResults()
@@ -380,7 +365,7 @@ function initFuncs() {
       break
       default :
         controller.opCount += 1
-
+        makeNewLine(false)
         displayOperator(index)
         if (controller.lineCalc) {
           total = trace.backtrace.length >= 4 ?
@@ -390,57 +375,98 @@ function initFuncs() {
         }
     }
   }
+  //blocks entry of redundant decimal points and zeros
+  function cleanFloatString(newString,oldString) {
 
+    function testForDecimals(str) {
+      if (str.indexOf(".") != -1) {
+        return true
+      }
+      return false
+    }
+
+    function testForRedundantZero(str) {
+      if (str[0] === "0" && str.length === 1) {
+        return true
+      }
+      return false
+    }
+
+    var cleanString = newString
+    var result = false
+    if (oldString) {
+      if (newString === ".") {
+        result = testForDecimals(oldString)
+
+      } else if (newString === "0" ) {
+        result = testForRedundantZero(oldString)
+      }
+    } else {
+      if (newString === ".") { cleanString = "0."}
+    }
+    if (result) { cleanString = "" }
+    return cleanString
+  }
+
+  // translates user input into calculator commands
   function initTenKey(signal, bool) {
-    console.log("controller.history = " + controller.history)
+    console.log("controller.history = " + JSON.stringify(controller.history))
     textBox.style.display = "block"
-    if ((Number(signal) || signal == "period" || signal == "0")) {
-      console.log("virtual 10Key log: number - " + signal)
-      //console.log("hidden input value: " + input.value)
+    var validVal = ""
+    if ((Number(signal) || signal == "." || signal == "0")) {
+      console.log("virtual 10Key logging number:  " + signal)
       if (!controller.operatorOnly) {
         if (controller.history[controller.opCount].length === 1) {
-          controller.history[controller.opCount].push(signal)
-          console.log("pushed first arg : " + signal + ", to opCount: " + controller.opCount)
+          validVal = cleanFloatString(signal,"")
+          controller.history[controller.opCount].push(validVal)
+          console.log("pushed first arg : " + validVal + ", to opCount: " + controller.opCount)
         } else {
-          controller.history[controller.opCount][1] += signal
+          validVal = cleanFloatString(signal,controller.history[controller.opCount][1])
+          controller.history[controller.opCount][1] += validVal
+          console.log("concantenated " + signal + " to current argument")
         }
         colorCodeNumeric(controller.history[controller.opCount][1])
       }
     } else {
-      console.log("virtual 10Key log: operator - " + signal)
-      //console.log("hidden input value: " + input.value)
-      //input.value = ""
-      if (controller.history[controller.opCount].length === 2) {
-        if (signal != "equals" && signal != "laquo") {
-          makeNewLine(false)
+      //if there are data in the current line, all operators will work
+      if (controller.history[controller.opCount][1]) {
+        console.log("virtual 10Key logged operator: " + signal)
+        if (signal != "equals" && signal != "laquo" ) {
+          controller.history.push([])
+          controller.history[controller.opCount + 1].push(signal)
         }
-        controller.history.push([])
-        controller.history[controller.opCount + 1].push(signal)
         listOperation(
           controller.history[controller.opCount][1],
           operatorHTML.indexOf("&" + signal + ";")
         )
         controller.operatorOnly = false
       } else {
-        if (signal === "laquo") {
+        if (signal === "laquo" ) {
           displayControlPanel()
+        } else {
+          console.log("virtual 10Key detected false operator")
         }
       }
     }
   }
 
   function clearOperation() {
+    var traceKeys = Object.keys(trace)
     makeNewLine(true)
     textBox.style.display = "none"
-    //subTotal.style.display = "none"
     results.style.display = "none"
     document.getElementById("resultsText").innerHTML = ""
     document.getElementById("subTotalText").innerHTML = ""
     debug.innerHTML = ""
-    trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
-              total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
     controller = { lineCalc : false, base: 10, operatorOnly: false,
                    history: [[null]],  opCount: 0 }
+    for (let i = 0; i < traceKeys.length; i++) {
+      if (traceKeys[i] != "lineCalcSubTotal" && traceKeys[i] != "reRack") {
+        trace[traceKeys[i]] =
+          (traceKeys === "total" || traceKeys === "reRacks")?
+            0 : []
+      }
+    }
   }
 
   /*
@@ -485,8 +511,10 @@ function initFuncs() {
   /*
   // Data-processing cocnern
   */
-  var trace = {}
+  var trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
+            total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
   var controller = {}
+  //populates controller poperties
   clearOperation()
 
   trace.lineCalcSubTotal = function () {
@@ -535,54 +563,19 @@ function initFuncs() {
   })
   // 1. Waits for operator input: +,-,*,/,enter, or ten-key number on keydown
   window.addEventListener("keydown", function () {
-    var inputVal = this.value
     var opIndex = operatorCodes.indexOf(event.keyCode)
     var numIndex = tenKeyCodes.indexOf(event.keyCode)
-    var validVal = ""
-    var currentLine
+    var symbol = ""
     if (opIndex != -1 ) {
-      //prevents two operators in a row:
-      //if it's not the first line, and there are no numeric characters entered yet
-      //the user cannot type an operator
-      if (controller.opCount >= 1 && controller.history[opCount].length === 1) {
-        return false
-        console.log("physical tenKey detected falseOperator")
-      } else {
-        controller.history[controller.opCount].push(
-          operatorHTML[opIndex].slice(1,operatorHTML[opIndex].length - 1)
-        )
-        if (opIndex != 4 && opIndex != 5) {
-          makeNewLine(false)
-        }
-        listOperation(controller.history[controller.opCount][1],opIndex)
-        console.log("physical tenKey detected operator:  " +
-          operatorHTML[opIndex].slice(
-            1,
-            operatorHTML[opIndex].length -1)
-        )
-        controller.operatorOnly = false
-      }
-    }
-
-    if (numIndex != -1) {
-      if (numIndex === 10 && currentLine.indexOf(".") === -1) {
-        validVal = "."
-      } else {
-        validVal = ""
-      }
-      validVal = numIndex.toString()
-      if (controller.history[controller.opCount].length === 1) {
-        controller.history[controller.opCount].push(validVal)
-      } else {
-        controller.history[controller.opCount][1] += validVal
-      }
-      colorCodeNumeric(controller.history[controller.opCount][1])
-      console.log("physical tenKey detected argument: " + validVal)
-      console.log(
-        "calling colorCodeNumeric(" +
-        controller.history[controller.opCount][1] +
-        ")"
-      )
+      symbol = operatorHTML[opIndex].slice(1,operatorHTML[opIndex].length -1)
+      console.log("physical tenKey detected operator:  " + symbol)
+      initTenKey(symbol, true)
+    } else if (numIndex != -1) {
+      symbol = (numIndex === 10)? "." : numIndex.toString()
+      initTenKey(symbol, true)
+      console.log("physical tenKey detected numeric argument: " + symbol)
+    } else {
+      console.log("non-tenKey keyboard input: " + event.keyCode)
     }
   })
 }

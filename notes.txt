@@ -1,25 +1,51 @@
-function makeNewLine() {
-  var appendClasses = ["","_awayTop","_awayBottom","_relaxed","_basic"]
-  var baseClass = "perspectiveShell"
-  var divs = document.getElementsByTagName("div")
-  var newShell = {}
-  var removeMe = {}
-  var removeIndex = 0
-  var j = appendClasses.length
-  for (let i = 0; i < divs.length; i++) {
-    if (divs[i].className.indexOf(baseClass) != -1) {
-        divs[i].className = baseClass +
-                             appendClasses[appendClasses.length - j]
-        if (j === appendClasses.length) { removeIndex = i }
-        j -= 1
-        if (j === 1) {
-          newShell = makeViewComponent(baseClass +
-                               appendClasses[appendClasses.length - j])
-          document.getElementById("theOutput").appendChild(newShell)
-        }
+window.addEventListener("keydown", function () {
+  var inputVal = this.value
+  var opIndex = operatorCodes.indexOf(event.keyCode)
+  var numIndex = tenKeyCodes.indexOf(event.keyCode)
+  var validVal = ""
+  var currentLine
+  if (opIndex != -1 ) {
+    //prevents two operators in a row:
+    //if it's not the first line, and there are no numeric characters entered yet
+    //the user cannot type an operator
+    if (controller.opCount >= 1 && controller.history[opCount].length === 1) {
+      return false
+      console.log("physical tenKey detected falseOperator")
+    } else {
+      controller.history[controller.opCount].push(
+        operatorHTML[opIndex].slice(1,operatorHTML[opIndex].length - 1)
+      )
+      if (opIndex != 4 && opIndex != 5) {
+
+      }
+      listOperation(controller.history[controller.opCount][1],opIndex)
+      console.log("physical tenKey detected operator:  " +
+        operatorHTML[opIndex].slice(
+          1,
+          operatorHTML[opIndex].length -1)
+      )
+      controller.operatorOnly = false
     }
   }
-  //console.log(removeIndex.toString())
-  //console.log(divs[removeIndex].className)
-  removeMe = divs[removeIndex].parentNode
-  document.getElementById("theOutput").removeChild(removeMe)
+
+  if (numIndex != -1) {
+    if (numIndex === 10 && currentLine.indexOf(".") === -1) {
+      validVal = "."
+    } else {
+      validVal = ""
+    }
+    validVal = numIndex.toString()
+    if (controller.history[controller.opCount].length === 1) {
+      controller.history[controller.opCount].push(validVal)
+    } else {
+      controller.history[controller.opCount][1] += validVal
+    }
+    colorCodeNumeric(controller.history[controller.opCount][1])
+    console.log("physical tenKey detected numeric argument: " + validVal)
+    console.log(
+      "calling colorCodeNumeric(" +
+      controller.history[controller.opCount][1] +
+      ")"
+    )
+  }
+})
