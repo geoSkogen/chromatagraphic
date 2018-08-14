@@ -57,6 +57,7 @@ function initFuncs() {
   */
   function makeNewLine(recursive) {
     var appendClasses = ["_awayTop","_awayBottom","_relaxed","_basic"]
+    var opacityScale = ["0.6","0.8","0.85","inherit"]
     var baseClass = "perspectiveShell"
     var shellElms = []
     var elmsByType = { operators: [], lines: [] }
@@ -66,56 +67,69 @@ function initFuncs() {
     for (let i = 0; i < appendClasses.length; i++) {
       className = baseClass + appendClasses[i]
       elm = document.getElementsByClassName(className)[0]
+      console.log("got element " + className)
       shellElms.push(elm)
       dataByType.opSymbols.push(elm.children[0].children[0].innerHTML)
+      console.log("pushed " + elm.children[0].children[0].innerHTML + " to symbols")
       dataByType.lineDivs.push(elm.children[0].children[1].innerHTML)
+      console.log("pushed " + elm.children[0].children[1].innerHTML + " to lines")
+      elmsByType.operators.push(elm.children[0].children[0])
+      console.log("pushed " +  elm.children[0].children[0].className + " to operator parents")
+      elmsByType.lines.push(elm.children[0].children[1])
+      console.log("pushed " +  elm.children[0].children[1].className + " to " + JSON.stringify(elmsByType.lines))
+      if (i === appendClasses.length-1) {
+        elm.children[0].children[0].id = "currentOperator"
+        elm.children[0].children[1].id = "currentLine"
+      }
     }
     dataByType.opSymbols.shift()
     dataByType.lineDivs.shift()
     dataByType.opSymbols.push("")
     dataByType.lineDivs.push("")
     if (recursive) {
-      dataByType.opSymbols = ["","","",""]
-      dataByType.lineDivs = ["","","",""]
+      dataByType.opSymbols = []
+      dataByType.lineDivs = []
+      console.log("recursion:" + recursive)
+      for (let i = 0; i < elmsByType.lines.length; i++) {
+        dataByType.opSymbols.push("")
+        dataByType.lineDivs.push("")
+        shellElms[i].style.opacity = "0"
+      }
     }
-    for (let i = 0; i < elmsByType.lines; i++ ) {
+    for (let i = 0; i < elmsByType.lines.length; i++ ) {
+      console.log("renaming " + shellElms[i].className + " " + baseClass + appendClasses[i])
+      shellElms[i].className = baseClass + appendClasses[i]
+      if (elmsByType.operators[i].innerHTML.length) {
+        shellElms[i].style.opacity = opacityScale[i]
+        console.log("got .innerHTML: " + elmsByType.operators[i].innerHTML.length + ", opacityScale: " + opacityScale[i])
+      }
       elmsByType.operators[i].innerHTML = dataByType.opSymbols[i]
-      elmsByType.lines[i].innerHTML = dataByType.ineDivs[i]
+      console.log("wrote " + dataByType.opSymbols[i] + " into " + elmsByType.operators[i].className + " " + i)
+      elmsByType.lines[i].innerHTML = dataByType.lineDivs[i]
+      console.log("wrote " + dataByType.lineDivs[i] + " into " + elmsByType.lines[i].className +  " " + i)
     }
     console.log("this is makeNewLine(" + recursive + ")")
   }
-  function displayOperator(indexNo) {
 
-    console.log("this is displayOperator(" + indexNo + ")")
-  }
-  function colorCodeNumeric(str) {
-    console.log("this is colorCodeNumeric(" + str + ")")
-  }
-  /*
   function displayOperator(indexNo) {
-    var char = operatorHTML[indexNo]
-    var charDiv = document.createElement("div")
-    var lines = document.getElementsByClassName("flexInnerColumn")
-    var newLine = lines[lines.length-1]
-    charDiv.className = "opChar"
-    charDiv.innerHTML = char
-    newLine.appendChild(charDiv)
-    return true
+    var currentOperator = document.getElementById("currentOperator")
+    var displaySymbol = operatorHTML[indexNo]
+    var opChar = document.createElement("div")
+    opChar.className = "opCharStatic"
+    opChar.innerHTML = displaySymbol
+    currentOperator.appendChild(opChar)
+    console.log("this is displayOperator(" + indexNo + ")")
   }
 
   function colorCodeNumeric(num) {
     var charArr = num.toString().split("")
-    var rows = document.getElementsByClassName("flexInnerColumn")
-    var thisRow = rows[rows.length-1]
-    var thisLine = thisRow.firstChild
-    //wrappedOutput[1].style.paddingBottom = "0.16em"
+    var thisLine = document.getElementById("currentLine")
     thisLine.innerHTML = ""
     for (let i = 0; i < charArr.length; i++) {
         thisLine.appendChild(colorDivFactory(charArr[i]))
     }
+    console.log("this is coloCodeNumeric(" + num + ")")
   }
-
-  */
   //takes a string (currently a char),
   //color-codes it (currently numerically),
   //and returns it in a div
@@ -189,6 +203,7 @@ function initFuncs() {
     return runningtotal
   }
   /*
+  _calculateResults_
   performs a long list of calculations in order of operations -
   mutliplication and division happen first,
   and their products are substitutied into a long addition problem
@@ -375,29 +390,36 @@ function initFuncs() {
         }
     }
   }
-  //blocks entry of redundant decimal points and zeros
+  /*
+  _cleanFloatString_
+  blocks entry of redundant decimal points and zeros
+  1) testForDecimals
+  2) testForRedundantZero
+  3) localVars
+  4) mainLogic
+  */
   function cleanFloatString(newString,oldString) {
-
+    // 1
     function testForDecimals(str) {
       if (str.indexOf(".") != -1) {
         return true
       }
       return false
     }
-
+    // 2
     function testForRedundantZero(str) {
       if (str[0] === "0" && str.length === 1) {
         return true
       }
       return false
     }
-
+    // 3
     var cleanString = newString
     var result = false
+    // 4
     if (oldString) {
       if (newString === ".") {
         result = testForDecimals(oldString)
-
       } else if (newString === "0" ) {
         result = testForRedundantZero(oldString)
       }
@@ -449,7 +471,7 @@ function initFuncs() {
       }
     }
   }
-
+  // rests data entry
   function clearOperation() {
     var traceKeys = Object.keys(trace)
     makeNewLine(true)
@@ -473,11 +495,15 @@ function initFuncs() {
   //
   //_M__A__I__N_
   //
+  application
+  1) References
+  2) DOM
+  3) controller
   */
+  // 0
   var debug = document.getElementById("debug")
-  /*
+  // 1
   // References
-  */
   var parenths = ["(",")"]
   var ops = ["+","-","*","/","="]
   var operatorHTML = [
@@ -489,14 +515,10 @@ function initFuncs() {
   var shift = 16
   var boolArr = [false, true]
   var displayArr = ["none","block"]
-  /*
+  // 2
   //DOM / View - concern
-  */
   var app = document.getElementById("app")
-
-  /*
   // Building the DOM
-  */
   var keys = findKeys()
   var output = document.getElementById("theOutput")
   var textBox = document.getElementById("textBox")
@@ -508,9 +530,8 @@ function initFuncs() {
   var closeModals = document.getElementsByClassName("closeModal")
   var radios = document.getElementsByClassName("modeButton")
   var clearButton = document.getElementsByClassName("clearButton")[0]
-  /*
+  // 3
   // Data-processing cocnern
-  */
   var trace = { backtrace: [], plus: [], minus: [], times: [], divide: [],
             total: 0, indexIndex: [], firstArg: [], subVals: [], reRacks: 0 }
   var controller = {}
@@ -561,19 +582,21 @@ function initFuncs() {
   window.addEventListener("keydown", function () {
     textBox.style.disply = "block"
   })
-  // 1. Waits for operator input: +,-,*,/,enter, or ten-key number on keydown
+
   window.addEventListener("keydown", function () {
     var opIndex = operatorCodes.indexOf(event.keyCode)
     var numIndex = tenKeyCodes.indexOf(event.keyCode)
     var symbol = ""
+    // waits for operator input from laptop/desktop 10-key
     if (opIndex != -1 ) {
       symbol = operatorHTML[opIndex].slice(1,operatorHTML[opIndex].length -1)
       console.log("physical tenKey detected operator:  " + symbol)
       initTenKey(symbol, true)
+    // waits for numeric or decimal point input from laptop/desktop 10-key
     } else if (numIndex != -1) {
       symbol = (numIndex === 10)? "." : numIndex.toString()
-      initTenKey(symbol, true)
       console.log("physical tenKey detected numeric argument: " + symbol)
+      initTenKey(symbol, true)
     } else {
       console.log("non-tenKey keyboard input: " + event.keyCode)
     }

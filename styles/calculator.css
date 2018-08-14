@@ -192,7 +192,7 @@ body {
   min-width: 15em;
   max-width: 15em;
   position: absolute;
-  bottom: 9%;
+  bottom: 12%;
   left: 16%;
   z-index: 10;
   //border: 1px solid blue;
@@ -321,7 +321,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
   background-color: black;
   //opacity: 0.6;
   z-index: 5;
-  display: none;
+  //display: none;
 }
 
 @media only screen and (min-width: 560px) {
