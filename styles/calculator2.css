@@ -212,7 +212,7 @@ a:active {
   min-width: 19em;
   max-width: 19em;
   position: absolute;
-  bottom: 4%;
+  bottom: 0%;
   left: 8%;
   z-index: 10;
   //border: 1px solid blue;
@@ -306,6 +306,13 @@ a:active {
   content: "&divide;"
 }
 */
+#laquo {
+  background-color: dimgrey;
+}
+
+#laquo:hover {
+  background-color: black;
+}
 
 #_9:hover {
   background-color: darkorange;
@@ -405,6 +412,10 @@ parameters will have to be changed if plus & equals signs center vertically*/
   }
 }
 
+.absoluteText {
+  position: absolute;
+}
+
 #resultsBox,
 #subTotalBox,
 #controlPanelBox {
@@ -422,11 +433,20 @@ parameters will have to be changed if plus & equals signs center vertically*/
 }
 
 #resultsBox {
-  top: 33%;
+  top: 44%;
+  border: 1.5px solid cornflowerblue;
+}
+
+#resultsSymbol {
+  color: dimgrey;
+  left: 0.5em;
+  top: 0%;
+  font-weight: bold;
+  font-size: 40px;
 }
 
 #subTotalBox {
-  top: 92%;
+  top: 30%;
   display: none;
 }
 
@@ -630,13 +650,51 @@ div.clearButtonSmall a {
   font-weight: bold;
   color: dimgrey;
   background-color: ivory;
-  padding: 0.06em 0.2em 0 0.2em;;
+  padding: 0 0.2em 0 0.2em;
   border: 1.5px solid dimgrey;
   border-radius: 100%;
   position: absolute;
-  top: -200%;
+  top: -340%;
   right: -5%;
   cursor: pointer;
+}
+
+#closeSubTotal {
+  border: 1.5px solid firebrick;
+  color: firebrick;
+}
+
+#closeControlPanel {
+  top: -750%;
+  right: -5%;
+}
+
+@media only screen and (min-wdith: 560px) {
+  .closeModal {
+    top: -300%;
+    right: -0.5%;
+  }
+
+  #closeControlPanel {
+    top: -750%;
+    right: -1.75%;
+  }
+
+  #closeResults {
+    right: 1.5%;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .closeModal {
+    top: -340%;
+    right: -3%;
+  }
+
+  #closeControlPanel {
+    top: -770%;
+    right: -1.75%;
+  }
 }
 
 .closeModal:hover {
