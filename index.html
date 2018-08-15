@@ -47,13 +47,19 @@
     <div class="flexOuterCenter">
       <div class="modal" id="controlPanelBox">
         <div class="relShell">
-          <div class="closeModal">&times;</div>
-        </div>
-        <div class="flexOuterCenter" id="controlPanelText">
-          <form>
+          <div class="openSubModal">
+            <div class="customHR"></div>
+            <div class="customHR"></div>
+            <div class="customHR"></div>
+          </div>
+          <div class="subModal" id="controlPanelHeader">
+            <div class="relShell">
+              <div class="closeSubModal">&times;</div>
+            </div>
             <div class="flexOuterCenter" id="controlPanelNav">
+              <div class="clearButtonSmall_noLink">start</div>
               <div class="clearButtonSmall">
-                <a class="clearButtonLink" href="pages/view1.html">version 1</a>
+                <a class="clearButtonLink" href="pages/view1.html">version1</a>
               </div>
               <div class="clearButtonSmall">
                 <a class="clearButtonLink"
@@ -62,8 +68,17 @@
                 </a>
               </div>
             </div>
+          </div>
+          <div class="closeModal">&times;</div>
+        </div>
+        <div class="flexOuterCenter" id="controlPanelText">
+          <form>
             <div class="flexOuterCenter" id="controlPanelTitle">
-              <div class="smallTitle">chromathagraphic version 2.0</div>
+              <div class="smallTitle">
+                <span class="titleSpan">chromathagraphic</span>
+                <span class="biggerSymbol">&ndash;v&raquo;</span>
+                <span class="biggerNumber">2.0</span>
+              </div>
             </div>
             <div class="flexOuterCenter" id="formShell0">
               <div class="radioLabel">mode</div>
@@ -80,6 +95,7 @@
             </div>
             <div class="flexOuterCenter" id="formShell3">
               <div class="clearButton">clear</div>
+            </div>
           </form>
         </div>
       </div>
