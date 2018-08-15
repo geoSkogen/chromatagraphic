@@ -528,6 +528,7 @@ parameters will have to be changed if plus & equals signs center vertically*/
   width: 2.5em;
   position: absolute;
   opacity: 0.7;
+  cursor: pointer;
   top: 400%;
   left: 2.5%;
 }
